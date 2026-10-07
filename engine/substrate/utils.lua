@@ -6,8 +6,8 @@ utils.__index = {}
 ---@param fields table A table containing field names (strings) that are going to be read-only.
 ---@return function|nil
 function utils.get_readonly_func(fields)
-    if not fields then game.error("Cannot create a read-only function: fields is not a table.") end
-    if #fields == 0 then game.error("Cannot create a read-only function: fields table is empty.") end
+    if not fields then game.error("Cannot create a read-only function: fields is not a table.") return end
+    if #fields == 0 then game.error("Cannot create a read-only function: fields table is empty.") return end
 
     return function (t, k, v)
         for _,field in ipairs(fields) do
@@ -28,8 +28,8 @@ end
 --- @param value any Value to find.
 --- @return any|nil
 function utils.table_find(t, value)
-    if not t then game.error("Table search failed: No table was provided.") end
-    if not value then game.error("Table search failed: No value was provided.") end
+    if not t then game.error("Table search failed: No table was provided.") return end
+    if not value then game.error("Table search failed: No value was provided.") return end
 
     for i = 1, #t do
         if t[i] == value then

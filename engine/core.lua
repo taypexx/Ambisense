@@ -6,34 +6,32 @@ Contains all core engine structures inside.
 It is also global so that you can access it from anywhere in the code.
 ]]
 
-game = {
-
-    -- Libraries
-    log = require("engine.substrate.log"),
-    utils = require("engine.substrate.utils"),
-    event = event,
-
-    error = error_handler.error,
-    error_handler = error_handler,
-    object_handler = require("engine.substrate.object_handler"),
-    appdata = require("engine.substrate.appdata"),
-
-    graphics_handler = require("engine.graphics.graphics_handler"),
-
-    input_handler = require("engine.input.input_handler"),
-
-    -- Events
-
-    on_update = event:new(),
-    on_quit = event:new(),
-}
+game = {}
 game.__index = game
+
+-- Libraries
+game.appdata = require("engine.substrate.appdata")
+game.log = require("engine.substrate.log")
+game.utils = require("engine.substrate.utils")
+game.event = event
+game.error = error_handler.error
+game.error_handler = error_handler
+game.object_handler = require("engine.substrate.object_handler")
+
+game.graphics_handler = require("engine.graphics.graphics_handler")
+
+game.mouse = require("engine.input.mouse")
+game.keyboard = require("engine.input.keyboard")
+
+-- Events
+game.on_update = event:new()
+game.on_quit = event:new()
 
 
 function game:load()
     self.appdata:init()
 
-    self.log("Engine initialized, launching the game...")
+    self.log("Engine was successfully initialized.")
 end
 
 function game:update(dt)

@@ -15,6 +15,17 @@ scene.__newindex = game.utils.get_readonly_func({"scene_id", "name"})
 -- Inherits
 setmetatable(scene, object)
 
+--- Adds a scene component to the scene.
+--- For internal use only.
+---@param component scene_component Scene component to add.
+function scene:add_component(component)
+    if game.utils.table_find(self.components, component) then 
+        game.error(string.format("Cannot add scene component to the %s (ID: %i): Component is already present on the scene.", self.name, self.scene_id))
+        return
+    end
+    table.insert(self.components, component)
+end
+
 --- Creates a new scene.
 ---@param name string|nil Name of the scene.
 ---@return scene|nil

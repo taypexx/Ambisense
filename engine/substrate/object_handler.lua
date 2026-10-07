@@ -11,7 +11,8 @@ object_handler.__index = object_handler
 --- For internal use only.
 ---@param object object Object to register.
 function object_handler:register(object)
-    if not object or object.object_id ~= nil then return end
+    if not object then game.error("Cannot register a new object: Object was not provided.") return end
+    if object.object_id ~= nil then game.error("Cannot register a new object: objcet_id is already assigned.") return end
 
     self.last_id = self.last_id + 1
     object.object_id = self.last_id
@@ -24,7 +25,7 @@ end
 --- For internal use only.
 ---@param object object Object to destroy.
 function object_handler:destroy(object)
-    if not object then return end
+    if not object then game.error("Cannot destroy the object: Object was not provided.") return end
     
     local id = object.object_id
     self.objects[id] = nil

@@ -22,8 +22,8 @@ end
 --- For internal use only.
 ---@param scene scene Scene to register.
 function graphics_handler:register_scene(scene)
-    if not scene then game.error("Cannot register a new scene: Scene was not provided.") end
-    if scene.scene_id ~= nil then game.error("Cannot register a new scene: scene_id is already assigned.") end
+    if not scene then game.error("Cannot register a new scene: Scene was not provided.") return end
+    if scene.scene_id ~= nil then game.error("Cannot register a new scene: scene_id is already assigned.") return end
 
     self.last_id = self.last_id + 1
     scene.scene_id = self.last_id

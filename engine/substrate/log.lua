@@ -10,10 +10,12 @@ local default_tags = {
 ---@param tag string|nil Title of the log message. Preferably in caps.
 return function(msg, level, tag)
     if not msg then return end
-    if not level then level = 0 end
-    if not tag then tag = default_tags[level] end
+    level = level or 0
+    tag = tag or default_tags[level]
     
     local msg = string.format("%s | [%s] | %s", os.date(), tag, msg)
-    game.appdata.client_log:write(msg)
+    if game.appdata.client_log then
+        game.appdata.client_log:write(msg)
+    end
     print(msg)
 end

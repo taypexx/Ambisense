@@ -4,8 +4,7 @@ return function()
     
     game.log("Game started.")
 
-    game.on_update:sub_once(function()
-        game.log("event fired!")
+    game.mouse.on_wheel_move:sub(function(y)
+        game.log(string.format("Mouse scroll: %i", y))
     end)
-
 end
