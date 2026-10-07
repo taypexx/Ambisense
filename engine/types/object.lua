@@ -8,9 +8,9 @@ object.__newindex = game.utils.get_readonly_func({"object_id"})
 --- Creates a new object and registers itself in the object_handler.
 ---@return object
 function object:new()
-    local new = setmetatable({}, self)
-    game.object_handler:register(new)
+    local new = setmetatable({},self)
 
+    game.object_handler:register(new)
     return new
 end
 

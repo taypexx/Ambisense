@@ -35,7 +35,7 @@ function appdata:init()
 end
 
 --- Closes all file handles if they are opened.
-function appdata:closeFileHandles()
+function appdata:close_file_handles()
     self.client_log:close()
     self.save_file:close()
     self.settings_file:close()

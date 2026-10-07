@@ -1,0 +1,49 @@
+local error_handler = require("engine.substrate.error_handler")
+local event = require("engine.types.event")
+
+--[[ 
+Contains all core engine structures inside. 
+It is also global so that you can access it from anywhere in the code.
+]]
+
+game = {
+
+    -- Libraries
+    log = require("engine.substrate.log"),
+    utils = require("engine.substrate.utils"),
+    event = event,
+
+    error = error_handler.error,
+    error_handler = error_handler,
+    object_handler = require("engine.substrate.object_handler"),
+    appdata = require("engine.substrate.appdata"),
+
+    graphics_handler = require("engine.graphics.graphics_handler"),
+
+    input_handler = require("engine.input.input_handler"),
+
+    -- Events
+
+    on_update = event:new(),
+    on_quit = event:new(),
+}
+game.__index = game
+
+
+function game:load()
+    self.appdata:init()
+
+    self.log("Engine initialized, launching the game...")
+end
+
+function game:update(dt)
+    self.on_update:fire(dt)
+
+
+end
+
+function game:quit()
+    self.on_quit:fire()
+
+    self.appdata:close_file_handles()
+end
