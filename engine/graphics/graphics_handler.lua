@@ -31,7 +31,7 @@ function graphics_handler:register_scene(scene)
     self.scenes[scene.scene_id] = scene
     self.scenesByName[scene.name] = scene
 
-    game.log("Registered a new scene, ID: "..scene.scene_id)
+    game.log("Registered a new scene, scene_id: "..scene.scene_id)
 end
 
 --- Draws the current scene.
@@ -46,8 +46,6 @@ function graphics_handler:draw()
     else
         love.graphics.print("Loading...", love.graphics.getWidth()/2, love.graphics.getHeight()/2)
     end
-
-    -- Draw the interface (TODO)
 
     -- Draw the cursor
     local mouse = game.mouse

@@ -22,7 +22,7 @@ function scene:add_component(component)
     local layer_table = self.components[component.layer]
     if layer_table then
         if game.utils.table_find(layer_table, component) then 
-            game.error(string.format("Cannot add scene component to the %s (ID: %i): Component is already present on the scene.", self.name, self.scene_id))
+            game.error(string.format("Cannot add scene component to the %s (scene_id: %i): Component is already present on the scene.", self.name, self.scene_id))
             return
         end
         table.insert(layer_table, component)
@@ -38,7 +38,7 @@ function scene:remove_component(component)
     local layer_table = self.components[component.layer]
     local i = game.utils.table_find(layer_table, component)
     if not (layer_table and i) then 
-        game.error(string.format("Cannot remove scene component from the %s (ID: %i): Component is not present on the scene.", self.name, self.scene_id))
+        game.error(string.format("Cannot remove scene component from the %s (scene_id: %i): Component is not present on the scene.", self.name, self.scene_id))
         return
     end
     table.remove(layer_table, i)

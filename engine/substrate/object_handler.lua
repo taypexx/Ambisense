@@ -12,13 +12,13 @@ object_handler.__index = object_handler
 ---@param object object Object to register.
 function object_handler:register(object)
     if not object then game.error("Cannot register a new object: Object was not provided.") return end
-    if object.object_id ~= nil then game.error("Cannot register a new object: objcet_id is already assigned.") return end
+    if object.object_id ~= nil then game.error("Cannot register a new object: object_id is already assigned.") return end
 
     self.last_id = self.last_id + 1
     object.object_id = self.last_id
 
     self.objects[object.object_id] = object
-    game.log("Created a new object, ID: "..object.object_id)
+    game.log("Created a new object, object_id: "..object.object_id)
 end
 
 --- Completly destroys the given object. 

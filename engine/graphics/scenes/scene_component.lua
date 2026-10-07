@@ -15,7 +15,7 @@ setmetatable(scene_component, object)
 
 --- Creates a new scene component.
 ---@param scene scene Scene to add this component to.
----@param layer integer|nil Initial layer to draw the component on. Default is 0.
+---@param layer integer|nil Initial layer to draw the component on. 0-999 - game objects. 1000+ - interface.
 ---@return scene_component|nil
 function scene_component:new(scene, layer)
     if not scene then game.error("Cannot create a new scene component: scene was not provided.") return end
