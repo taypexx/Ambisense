@@ -1,6 +1,9 @@
-local object = require("engine.types.object")
+local object = game.types.object
 
 ---@class sprite
+---@field image love.image Sprite image.
+---@field width integer Image width in pixels.
+---@field height integer Image height in pixels.
 local sprite = {
     image = nil,
     width = nil,
@@ -35,6 +38,14 @@ function sprite:new_from_file(file_path)
 
     local image = love.graphics.newImage(file_path)
     return self:new_from_image(image)
+end
+
+--- Destroys the sprite. Also destroys its image.
+function sprite:destroy()
+    if self.image then
+        self.image:release()
+    end
+    object.destroy(self)
 end
 
 return sprite

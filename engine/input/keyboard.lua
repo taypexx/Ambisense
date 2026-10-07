@@ -1,4 +1,4 @@
-local event = require("engine.types.event")
+local event = game.types.event
 
 ---@class keyboard
 ---@field on_key_down event Fires when a keyboard button is pressed. Arguments: key:string - Key that was pressed. All key strings: https://www.love2d.org/wiki/Scancode.

@@ -1,4 +1,4 @@
-local event = require("engine.types.event")
+local event = game.types.event
 
 ---@class mouse
 ---@field current_cursor cursor The current cursor that is being rendered on the screen.

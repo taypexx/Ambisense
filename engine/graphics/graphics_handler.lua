@@ -34,6 +34,7 @@ function graphics_handler:register_scene(scene)
     game.log("Registered a new scene, ID: "..scene.scene_id)
 end
 
+--- Draws the current scene.
 function graphics_handler:draw()
     if self.currentScene then
         for _,component in ipairs(self.currentScene.components) do

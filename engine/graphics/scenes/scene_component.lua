@@ -1,4 +1,4 @@
-local object = require("engine.types.object")
+local object = game.types.object
 
 ---@class scene_component
 ---@field scene scene Scene of the component.
@@ -22,6 +22,14 @@ function scene_component:new(scene)
     scene:add_component(new)
 
     return new
+end
+
+--- Destroys the component. Also removes the component from the attached scene.
+function scene_component:destroy()
+    if self.scene then
+        self.scene:remove_component(self)
+    end
+    object.destroy(self)
 end
 
 return scene_component

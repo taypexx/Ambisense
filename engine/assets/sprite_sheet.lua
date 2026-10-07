@@ -1,5 +1,4 @@
-local object = require("engine.types.object")
-local sprite = require("engine.assets.sprite")
+local object = game.types.object
 
 ---@class sprite_sheet
 local sprite_sheet = {
@@ -11,7 +10,7 @@ local sprite_sheet = {
     quad_height = nil
 }
 sprite_sheet.__index = sprite_sheet
-sprite.__newindex = game.utils.get_readonly_func({"image", "width", "height", "quads", "quad_width", "quad_height"})
+sprite_sheet.__newindex = game.utils.get_readonly_func({"image", "width", "height", "quads", "quad_width", "quad_height"})
 
 -- Inherits
 setmetatable(sprite_sheet, object)
@@ -45,6 +44,17 @@ function sprite_sheet:new(file_path, width, height)
     new.quad_height = height
 
     return new
+end
+
+--- Destroys the sprite sheet. Also destroys its image and quads.
+function sprite_sheet:destroy()
+    self.image:release()
+    if self.quads then
+        for _,quad in ipairs(self.quads) do
+            quad:release()
+        end
+    end
+    object.destroy(self)
 end
 
 return sprite_sheet

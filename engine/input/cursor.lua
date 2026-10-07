@@ -1,4 +1,4 @@
-local object = require("engine.types.object")
+local object = game.types.object
 
 ---@class cursor
 local cursor = {
@@ -28,6 +28,14 @@ function cursor:new(sprite, x, y)
     cursor.y_hot = y
     
     return new
+end
+
+
+function cursor:destroy()
+    if self.sprite then
+        self.sprite:destroy()
+    end
+    object.destroy(self)
 end
 
 return cursor

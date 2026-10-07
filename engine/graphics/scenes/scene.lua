@@ -1,9 +1,9 @@
-local object = require("engine.types.object")
+local object = game.types.object
 
 ---@class scene
 ---@field scene_id integer Unique ID of the scene.
 ---@field name string Unique name of the scene.
----@field components table A table of all scene_components of the scene.
+---@field components table<scene> A table of all scene_components of the scene.
 local scene = {
     scene_id = nil,
     name = nil,
@@ -24,6 +24,18 @@ function scene:add_component(component)
         return
     end
     table.insert(self.components, component)
+end
+
+--- Removes the scene component from the scene.
+--- For internal use only.
+---@param component scene_component Scene component to remove.
+function scene:remove_component(component)
+    local i = game.utils.table_find(self.components, component)
+    if not i then 
+        game.error(string.format("Cannot remove scene component from the %s (ID: %i): Component is not present on the scene.", self.name, self.scene_id))
+        return
+    end
+    table.remove(self.components, i)
 end
 
 --- Creates a new scene.
