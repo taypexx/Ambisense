@@ -10,10 +10,14 @@ return function()
     local scene = scene:new("Main")
 
     game.mouse.on_left_down:sub(function()
-        local component = scene_component:new(scene)
+        if game.mouse.current_cursor.name == "default" then
+            game.mouse:set_cursor("test")
+        else
+            game.mouse:set_cursor("default")
+        end
     end)
 
     game.mouse.on_right_down:sub(function()
-        scene.components[#scene.components]:destroy()
+        game.mouse.cursor_visible = not game.mouse.cursor_visible
     end)
 end

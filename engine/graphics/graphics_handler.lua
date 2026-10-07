@@ -1,7 +1,7 @@
 ---@class graphics_handler
 ---@field last_id integer The ID of the last created scene.
----@field scenes table A dictionary of scenes where ID (integer) is the key.
----@field scenesByName table A dictionary of scenes where name (string) is the key.
+---@field scenes table<integer,scene> A dictionary of scenes where ID is the key.
+---@field scenesByName table<string,scene> A dictionary of scenes where name is the key.
 ---@field currentScene scene|nil Current scene that is being rendered on screen.
 local graphics_handler = {
     last_id = 0,
@@ -36,13 +36,32 @@ end
 
 --- Draws the current scene.
 function graphics_handler:draw()
+    -- Draw the scene components first
     if self.currentScene then
-        for _,component in ipairs(self.currentScene.components) do
-            component:draw()
+        for layer,components in pairs(self.currentScene.components) do
+            for _,component in pairs(components) do
+                component:draw()
+            end
         end
     else
         love.graphics.print("Loading...", love.graphics.getWidth()/2, love.graphics.getHeight()/2)
     end
+
+    -- Draw the interface (TODO)
+
+    -- Draw the cursor
+    local mouse = game.mouse
+    local cursor = mouse.current_cursor
+    if love.window.hasMouseFocus() and cursor and mouse.cursor_visible then
+        love.graphics.draw(cursor.sprite.image, mouse:getX(), mouse:getY())
+    end
+end
+
+function graphics_handler:init()
+    -- Cursor setup
+    love.mouse.setVisible(false)
+    game.mouse:load_cursors()
+    game.mouse:set_cursor("default")
 end
 
 return graphics_handler

@@ -1,4 +1,5 @@
 ---@class object
+---@field object_id integer Unique ID of the object.
 local object = {
     object_id = nil
 }
@@ -13,7 +14,7 @@ function object:new()
     return new
 end
 
---- Same as 'game.object_handler:destroy(object)'
+--- Destroys the object. Same as 'game.object_handler:destroy(object)'
 function object:destroy()
     game.object_handler:destroy(self)
 end

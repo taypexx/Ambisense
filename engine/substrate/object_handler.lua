@@ -29,7 +29,6 @@ function object_handler:destroy(object)
     
     local id = object.object_id
     self.objects[id] = nil
-    object = nil
     collectgarbage("collect")
 
     game.log(string.format("Object %i was destroyed. Is nil: %s", id, tostring(object==nil)))

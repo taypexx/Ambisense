@@ -53,6 +53,7 @@ game.on_quit = event:new()
 
 function game:load()
     self.appdata:init()
+    self.graphics_handler:init()
 
     self.log("Engine was successfully initialized.")
 end

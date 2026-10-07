@@ -1,6 +1,12 @@
 local object = game.types.object
 
 ---@class sprite_sheet
+---@field image love.image Main image of the sprite sheet.
+---@field width integer Width of the main image in pixels.
+---@field height integer Height of the main image in pixels.
+---@field quads table<love.Quad> A table containing all quads of the main image used to render different sprites of the sheet.
+---@field quad_width integer Width of one quad in pixels.
+---@field quad_height integer Height of one quad in pixels.
 local sprite_sheet = {
     image = nil,
     width = nil,
@@ -48,7 +54,9 @@ end
 
 --- Destroys the sprite sheet. Also destroys its image and quads.
 function sprite_sheet:destroy()
-    self.image:release()
+    if self.image then
+        self.image:release()
+    end
     if self.quads then
         for _,quad in ipairs(self.quads) do
             quad:release()

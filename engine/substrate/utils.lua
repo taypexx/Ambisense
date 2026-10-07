@@ -38,4 +38,19 @@ function utils.table_find(t, value)
     end
 end
 
+--- Splits a string by the provided separator and returns a table containing split strings.
+---@param input string String to split.
+---@param sep string Separator which divides the original string.
+---@return table
+function utils.split(input, sep)
+    if sep == nil then
+        sep = "%s" -- Defaults to whitespace
+    end
+    local t = {}
+    for str in string.gmatch(input, "([^" .. sep .. "]+)") do
+        table.insert(t, str)
+    end
+    return t
+end
+
 return utils

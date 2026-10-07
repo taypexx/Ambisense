@@ -8,7 +8,7 @@ local keyboard = {
     on_key_up = event:new()
 }
 keyboard.__index = keyboard
-keyboard.__newindex = game.utils.get_readonly_func({})
+keyboard.__newindex = game.utils.get_readonly_func({"on_key_down", "on_key_up"})
 
 function love.keypressed(key, scancode)
     keyboard.on_key_down:fire(scancode)
