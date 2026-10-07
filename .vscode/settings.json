@@ -1,0 +1,11 @@
+{
+    "Lua.runtime.version": "LuaJIT",
+    "Lua.workspace.checkThirdParty": false,
+    "Lua.workspace.library": [
+        "C:\\Program Files\\LOVE\\love_definitions"
+    ],
+    "Lua.diagnostics.disable": [
+        "lowercase-global",
+        "duplicate-set-field"
+    ]
+}

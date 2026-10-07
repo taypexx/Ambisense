@@ -1,0 +1,14 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run LÖVE Game",
+            "type": "process",
+            "command": "C:\\Program Files\\LOVE\\love.exe",
+            "args": [
+                "${workspaceFolder}"
+            ],
+            "problemMatcher": []
+        },
+    ]
+}
