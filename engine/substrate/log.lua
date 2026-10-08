@@ -15,7 +15,7 @@ return function(msg, level, tag)
     
     local msg = string.format("%s | [%s] | %s", os.date(), tag, msg)
     if game.appdata.client_log then
-        game.appdata.client_log:write(msg)
+        game.appdata.client_log:write(msg.."\n")
     end
     print(msg)
 end
