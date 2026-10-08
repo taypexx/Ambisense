@@ -1,3 +1,5 @@
+local utils = game.utils
+
 ---@class graphics_handler
 ---@field last_id integer The ID of the last created scene.
 ---@field scenes table<integer,scene> A dictionary of scenes where ID is the key.
@@ -10,6 +12,50 @@ local graphics_handler = {
     currentScene = nil
 }
 graphics_handler.__index = graphics_handler
+
+--- Gets the top most component at the given position or nil if there are none.
+---@param x integer X coordinate to look for the component.
+---@param y integer Y coordinate to look for the component.
+---@return scene_component|nil
+function graphics_handler:get_top_component(x,y)
+    if not self.currentScene then return end
+
+    return utils.reverse_iterate(self.currentScene.components, function (layer, components)
+        for _,component in pairs(components) do
+            if component:does_overlap(x,y) then
+                return component
+            end
+        end
+    end)
+end
+
+--- Fires element enter/leave events based on the current mouse position.
+function graphics_handler:process_mouse_position(x,y,dx,dy)
+    local elem = self:get_top_component(x,y)
+    local prev_elem = self:get_top_component(x-dx,y-dy)
+    if elem == prev_elem then return end
+
+    if elem and elem.on_mouse_enter then
+        elem.on_mouse_enter:fire()
+    end
+    if prev_elem and prev_elem.on_mouse_enter then
+        prev_elem.on_mouse_leave:fire()
+    end
+end
+
+--- Fires on_mouse_down event on elements based on their position.
+function graphics_handler:process_mouse_down(x,y)
+    local elem = self:get_top_component(x,y)
+    if not (elem and elem.on_mouse_down) then return end
+    elem.on_mouse_down:fire(x,y)
+end
+
+--- Fires on_mouse_up event on elements based on their position.
+function graphics_handler:process_mouse_up(x,y)
+    local elem = self:get_top_component(x,y)
+    if not (elem and elem.on_mouse_up) then return end
+    elem.on_mouse_up:fire(x,y)
+end
 
 --- Switches the current scene to the given one.
 --- After switching the game will start rendering it.
@@ -56,10 +102,16 @@ function graphics_handler:draw()
 end
 
 function graphics_handler:init()
-    -- Cursor setup
+    -- Mouse and cursor setup
     love.mouse.setVisible(false)
-    game.mouse:load_cursors()
-    game.mouse:set_cursor("default")
+    
+    local mouse = game.mouse
+    mouse:load_cursors()
+    mouse:set_cursor("default")
+
+    mouse.on_move:sub(self.process_mouse_position, self)
+    mouse.on_left_down:sub(self.process_mouse_down, self)
+    mouse.on_left_up:sub(self.process_mouse_up, self)
 end
 
 return graphics_handler

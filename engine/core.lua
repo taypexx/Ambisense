@@ -45,6 +45,10 @@ game.input = {
     cursor = require("engine.input.cursor")
 }
 
+game.ui = {
+    ui_element = require("engine.graphics.ui.ui_element")
+}
+
 --------------------------------------------
 
 game.on_update = event:new()

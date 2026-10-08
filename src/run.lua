@@ -1,23 +1,42 @@
 -- Main function of the game (outside of engine code)
 
-local scene = require("engine.graphics.scenes.scene")
-local scene_component = require("engine.graphics.scenes.scene_component")
+local scene = game.scenes.scene
+local mouse = game.mouse
 
 return function()
     
     game.log("Game started.")
 
-    local scene = scene:new("Main")
+    local main_scene = scene:new("Main")
+    game.graphics_handler:switch_scene(main_scene)
 
-    game.mouse.on_left_down:sub(function()
-        if game.mouse.current_cursor.name == "default" then
-            game.mouse:set_cursor("test")
-        else
-            game.mouse:set_cursor("default")
-        end
-    end)
+    local layer = 1000
 
-    game.mouse.on_right_down:sub(function()
-        game.mouse.cursor_visible = not game.mouse.cursor_visible
+    mouse.on_right_down:sub(function()
+        local elem = game.ui.ui_element:new(
+            main_scene, layer,
+            mouse:getX() / love.graphics.getPixelWidth(), 
+            mouse:getY() / love.graphics.getPixelHeight(),
+            0.2,0.2
+        )
+        elem:set_parent(main_scene)
+
+        local x,y = elem:get_pixel_position()
+        local w,h = elem:get_pixel_size()
+
+        elem.on_mouse_enter:sub(function ()
+            game.log("Mouse enter "..elem.object_id)
+        end)
+        elem.on_mouse_leave:sub(function ()
+            game.log("Mouse leave "..elem.object_id)
+        end)
+        elem.on_mouse_down:sub(function ()
+            game.log("Mouse down "..elem.object_id)
+        end)
+        elem.on_mouse_up:sub(function ()
+            game.log("Mouse up "..elem.object_id)
+        end)
+
+        layer = layer + 1
     end)
 end

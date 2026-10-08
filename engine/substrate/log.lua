@@ -9,7 +9,7 @@ local default_tags = {
 ---@param level integer|nil Level of the log message. 0 = info, 1 = warning, 2 = error.
 ---@param tag string|nil Title of the log message. Preferably in caps.
 return function(msg, level, tag)
-    if not msg then return end
+    if not msg then msg = "nil" end
     level = level or 0
     tag = tag or default_tags[level]
     

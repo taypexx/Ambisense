@@ -1,17 +1,22 @@
 local object = game.types.object
 
----@class scene_component
+---@class scene_component:object
 ---@field scene scene Scene of the component.
 ---@field layer integer Layer on which the component will be drawn. 0 is default. Higher values will overlap lower values.
 local scene_component = {
     scene = nil,
-    layer = nil
+    layer = nil,
 }
 scene_component.__index = scene_component
 scene_component.__newindex = game.utils.get_readonly_func({"scene"})
 
 -- Inherits
 setmetatable(scene_component, object)
+
+function scene_component:draw() end
+function scene_component:does_overlap(x,y) end
+function scene_component:get_pixel_position() end
+function scene_component:get_pixel_size() end
 
 --- Creates a new scene component.
 ---@param scene scene Scene to add this component to.

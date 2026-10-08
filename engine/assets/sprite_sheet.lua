@@ -58,7 +58,7 @@ function sprite_sheet:destroy()
         self.image:release()
     end
     if self.quads then
-        for _,quad in ipairs(self.quads) do
+        for _,quad in pairs(self.quads) do
             quad:release()
         end
     end

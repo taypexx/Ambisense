@@ -1,6 +1,6 @@
 local object = game.types.object
 
----@class cursor
+---@class cursor:object
 ---@field name string Name of the cursor.
 ---@field sprite sprite Sprite of the cursor.
 ---@field x_hot integer X hot spot coordinate of the cursor in pixels.

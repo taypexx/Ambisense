@@ -1,6 +1,6 @@
 local object = game.types.object
 
----@class scene
+---@class scene:object
 ---@field scene_id integer Unique ID of the scene.
 ---@field name string Unique name of the scene.
 ---@field components table<integer,table<scene_component>> A dictionary with keys set as layers and values set as tables containing scene components.
