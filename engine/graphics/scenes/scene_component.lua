@@ -15,8 +15,8 @@ setmetatable(scene_component, object)
 
 function scene_component:draw() end
 function scene_component:does_overlap(x,y) end
-function scene_component:get_pixel_position() end
-function scene_component:get_pixel_size() end
+function scene_component:get_position() end
+function scene_component:get_size() end
 
 --- Creates a new scene component.
 ---@param scene scene Scene to add this component to.

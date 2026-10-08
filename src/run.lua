@@ -21,9 +21,6 @@ return function()
         )
         elem:set_parent(main_scene)
 
-        local x,y = elem:get_pixel_position()
-        local w,h = elem:get_pixel_size()
-
         elem.on_mouse_enter:sub(function ()
             game.log("Mouse enter "..elem.object_id)
         end)

@@ -43,8 +43,8 @@ setmetatable(ui_element, scene_component)
 function ui_element:draw()
     if not self.active then return end
 
-    local x,y = self:get_pixel_position()
-    local width,height = self:get_pixel_size()
+    local x,y = self:get_position()
+    local width,height = self:get_size()
 
     utils.apply_transparency(self.transparency)
     love.graphics.rectangle("fill", x, y, width, height)
@@ -56,15 +56,34 @@ end
 ---@param y integer Y position to check.
 ---@return boolean
 function ui_element:does_overlap(x,y)
-    local ox,oy = self:get_pixel_position()
-    local width,height = self:get_pixel_size()
+    local ox,oy = self:get_position()
+    local width,height = self:get_size()
 
     return x >= ox and x <= ox + width and y >= oy and y <= oy + height
 end
 
+--- Sets the pixel position of the element. To change position relative to the parent change ui_element.x and ui_element.y.
+---@param x integer New width in pixels.
+---@param y integer New height in pixels.
+function ui_element:set_position(x,y)
+    local ox,oy = self:get_position()
+    local ow,oh = self:get_size()
+    self.x = x / (ox + ow)
+    self.y = y / (oy + oh)
+end
+
+--- Sets the pixel size of the element. To change size relative to the parent change ui_element.width and ui_element.height.
+---@param width integer New width in pixels.
+---@param height integer New height in pixels.
+function ui_element:set_size(width, height)
+    local ow,oh = self:get_size()
+    self.width = width / ow * self.width
+    self.height = height / oh * self.height
+end
+
 --- Gets the pixel position to render the element.
 ---@return integer,integer
-function ui_element:get_pixel_position()
+function ui_element:get_position()
     local x = 0
     local y = 0
 
@@ -72,8 +91,8 @@ function ui_element:get_pixel_position()
         local px,py
         local pw,ph
         if self.parent.parent then
-            px,py = self.parent:get_pixel_position()
-            pw,ph = self.parent:get_pixel_size()
+            px,py = self.parent:get_position()
+            pw,ph = self.parent:get_size()
         else
             px,py = 0,0
             pw,ph = love.graphics.getPixelWidth(),love.graphics.getPixelHeight()
@@ -86,21 +105,21 @@ end
 
 --- Gets the pixel size to render the element.
 ---@return integer,integer
-function ui_element:get_pixel_size()
-    local width = 0
-    local height = 0
+function ui_element:get_size()
+    local w = 0
+    local h = 0
 
     if self.parent then
         local pw,ph
         if self.parent.parent then
-            pw,ph = self.parent:get_pixel_size()
+            pw,ph = self.parent:get_size()
         else
             pw,ph = love.graphics.getPixelWidth(),love.graphics.getPixelHeight()
         end
-        width = pw * self.width
-        height = ph * self.height
+        w = pw * self.width
+        h = ph * self.height
     end
-    return width,height
+    return w,h
 end
 
 --- Sets the parent of the UI element.
