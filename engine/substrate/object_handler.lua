@@ -21,7 +21,7 @@ function object_handler:register(object)
     game.log("Created a new object, object_id: "..object.object_id)
 end
 
---- Completly destroys the given object. 
+--- Completely destroys the given object. 
 --- For internal use only.
 ---@param object object Object to destroy.
 function object_handler:destroy(object)

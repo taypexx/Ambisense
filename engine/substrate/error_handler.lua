@@ -5,7 +5,7 @@ error_handler.__index = error_handler
 --- Registers and logs an error.
 ---@param msg string|nil A message to log.
 function error_handler.error(msg)
-    if not msg then msg = "An unknown error has occured." end
+    if not msg then msg = "An unknown error has occurred." end
     
     game.log(msg, 2)
 end
