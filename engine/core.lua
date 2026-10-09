@@ -1,6 +1,3 @@
-local error_handler = require("engine.substrate.error_handler")
-local event = require("engine.types.event")
-
 --[[ 
 Contains all core engine structures inside. 
 It is also global so that you can access it from anywhere in the code.
@@ -11,17 +8,18 @@ game.__index = game
 
 --------------------------------------------
 
+local error_handler = require("engine.substrate.error_handler")
+
 game.appdata = require("engine.substrate.appdata")
 game.log = require("engine.substrate.log")
 game.error = error_handler.error
 game.error_handler = error_handler
 game.utils = require("engine.substrate.utils")
-game.event = event
 
-game.types = {
-    object = require("engine.types.object"),
-    event = require("engine.types.event")
-}
+game.types = {}
+game.types.object = require("engine.types.object")
+game.types.event_handle = require("engine.types.event_handle")
+game.types.event = require("engine.types.event")
 
 game.audio_handler = require("engine.audio.audio_handler")
 game.graphics_handler = require("engine.graphics.graphics_handler")
@@ -31,28 +29,25 @@ game.object_handler = require("engine.substrate.object_handler")
 game.mouse = require("engine.input.mouse")
 game.keyboard = require("engine.input.keyboard")
 
-game.assets = {
-    sprite = require("engine.assets.sprite"),
-    sprite_sheet = require("engine.assets.sprite_sheet")
-}
+game.assets = {}
+game.assets.sprite = require("engine.assets.sprite")
+game.assets.sprite_sheet = require("engine.assets.sprite_sheet")
 
-game.scenes = {
-    scene = require("engine.graphics.scenes.scene"),
-    scene_component = require("engine.graphics.scenes.scene_component")
-}
+game.scenes = {}
+game.scenes.scene = require("engine.graphics.scenes.scene")
+game.scenes.scene_component = require("engine.graphics.scenes.scene_component")
 
-game.input = {
-    cursor = require("engine.input.cursor")
-}
 
-game.ui = {
-    ui_element = require("engine.graphics.ui.ui_element")
-}
+game.input = {}
+game.input.cursor = require("engine.input.cursor")
+
+game.ui = {}
+game.ui.ui_element = require("engine.graphics.ui.ui_element")
 
 --------------------------------------------
 
-game.on_update = event:new()
-game.on_quit = event:new()
+game.on_update = game.types.event:new()
+game.on_quit = game.types.event:new()
 
 
 function game:load()

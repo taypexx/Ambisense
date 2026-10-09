@@ -1,5 +1,5 @@
 local scene_component = game.scenes.scene_component
-local event = game.event
+local event = game.types.event
 local utils = game.utils
 
 ---@class ui_element:scene_component
