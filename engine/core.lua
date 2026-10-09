@@ -21,10 +21,10 @@ game.types.object = require("engine.types.object")
 game.types.event_handle = require("engine.types.event_handle")
 game.types.event = require("engine.types.event")
 
+game.object_handler = require("engine.substrate.object_handler")
+
 game.audio_handler = require("engine.audio.audio_handler")
 game.graphics_handler = require("engine.graphics.graphics_handler")
-
-game.object_handler = require("engine.substrate.object_handler")
 
 game.mouse = require("engine.input.mouse")
 game.keyboard = require("engine.input.keyboard")
@@ -36,7 +36,6 @@ game.assets.sprite_sheet = require("engine.assets.sprite_sheet")
 game.scenes = {}
 game.scenes.scene = require("engine.graphics.scenes.scene")
 game.scenes.scene_component = require("engine.graphics.scenes.scene_component")
-
 
 game.input = {}
 game.input.cursor = require("engine.input.cursor")

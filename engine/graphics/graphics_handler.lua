@@ -36,9 +36,12 @@ function graphics_handler:process_mouse_position(x,y,dx,dy)
     if elem == prev_elem then return end
 
     if elem and elem.on_mouse_enter then
+        game.mouse.current_component = elem
         elem.on_mouse_enter:fire()
+    elseif elem == nil then
+        game.mouse.current_component = nil
     end
-    if prev_elem and prev_elem.on_mouse_enter then
+    if prev_elem and prev_elem.on_mouse_leave then
         prev_elem.on_mouse_leave:fire()
     end
 end

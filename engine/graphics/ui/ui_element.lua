@@ -11,7 +11,6 @@ local utils = game.utils
 ---@field height number Height where 0 covers 0% of the parent's height, 1 covers 100% of the parent's height.
 ---@field parent ui_element|scene|nil Parent UI element. To change use ui_element:set_parent().
 ---@field children table<ui_element> Children UI elements.
----@field mouse_overlap boolean True if the mouse is on the element, false if the mouse is outside.
 ---@field on_mouse_enter event Fires when the mouse enters the element.
 ---@field on_mouse_leave event Fires when the mouse leaves the element.
 local ui_element = {
@@ -27,14 +26,13 @@ local ui_element = {
     parent = nil,
     children = nil,
 
-    mouse_overlap = nil,
     on_mouse_enter = nil,
     on_mouse_leave = nil,
     on_mouse_down = nil,
     on_mouse_up = nil
 }
 ui_element.__index = ui_element
-ui_element.__newindex = utils.get_readonly_func({"on_mouse_enter", "on_mouse_leave"})
+ui_element.__newindex = utils.get_readonly_func({"on_mouse_enter", "on_mouse_leave", "on_mouse_down", "on_mouse_up"})
 
 -- Inherits
 setmetatable(ui_element, scene_component)
@@ -164,7 +162,6 @@ function ui_element:new(scene, layer, x, y, width, height, parent)
     new.active = true
     new.transparency = 0.5
 
-    new.mouse_overlap = false
     new.on_mouse_enter = event:new()
     new.on_mouse_leave = event:new()
     new.on_mouse_down = event:new()

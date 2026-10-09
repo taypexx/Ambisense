@@ -4,7 +4,7 @@ local event = game.types.event
 ---@field cursors table<string,cursor> All cached cursors. Key is the cursor name.
 ---@field current_cursor cursor The current cursor that is being rendered on the screen.
 ---@field cursor_visible boolean Visibility of the cursor. True is visible, false is hidden.
----@field current_ui_element ui_element Current UI element that the mouse is pointing at.
+---@field current_component scene_component Current scene component that the mouse is pointing at.
 ---@field on_left_down event Fires when the left mouse button is pressed. Arguments: x:integer| y:integer.
 ---@field on_right_down event Fires when the right mouse button is pressed. Arguments: x:integer | y:integer.
 ---@field on_left_up event Fires when the left mouse button is released. Arguments: x:integer | y:integer.
@@ -16,7 +16,7 @@ local mouse = {
     current_cursor = nil,
     cursor_visible = true,
 
-    current_ui_element = nil,
+    current_component = nil,
 
     on_left_down = event:new(),
     on_left_up = event:new(),

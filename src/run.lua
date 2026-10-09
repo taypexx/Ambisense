@@ -21,8 +21,6 @@ return function()
         )
         elem:set_parent(main_scene)
 
-        
-
         layer = layer + 1
     end)
 end
