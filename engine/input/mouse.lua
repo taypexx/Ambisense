@@ -1,4 +1,5 @@
 local event = game.types.event
+local asset_handler = game.asset_handler
 
 ---@class mouse
 ---@field cursors table<string,cursor> All cached cursors. Key is the cursor name.
@@ -44,14 +45,15 @@ end
 
 --- Loads all cursors from assets/sprites/cursors
 function mouse:load_cursors()
+    if not asset_handler.sprites.cursors then game.error("Cannot load cursors: Cursor sprites are not loaded.") return end
+
     for _,cursor in pairs(self.cursors) do
         cursor:destroy()
     end
-
     self.cursors = {}
 
-    for _,cursor_file_name in pairs(love.filesystem.getDirectoryItems("assets/sprites/cursors")) do
-        local cursor = game.input.cursor:new(cursor_file_name)
+    for _,sprite in pairs(asset_handler.sprites.cursors) do
+        local cursor = game.input.cursor:new(sprite)
         if cursor then
             self.cursors[cursor.name] = cursor
         end

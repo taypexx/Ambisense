@@ -18,23 +18,17 @@ cursor.__newindex = game.utils.get_readonly_func({"name", "sprite"})
 setmetatable(cursor, object)
 
 --- Creates a new cursor.
----@param file_name string Name of the cursor sprite file. All cursors are stored in assets/sprites/cursors.
+---@param sprite sprite Sprite of the cursor.
 ---@param x integer|nil X coordinate of the cursor hot spot. 
 ---@param y integer|nil Y coordinate of the cursor hot spot. 
 ---@return cursor|nil
-function cursor:new(file_name, x, y)
-    if not file_name then game.error("Cannot create a cursor: file_name was not provided.") return end
-    local file_path = "assets/sprites/cursors/"..file_name
-    if not love.filesystem.getInfo(file_path) then game.error("Cannot create a cursor: file path is invalid.") return end
-
-    local sprite = game.assets.sprite:new_from_file(file_path)
-    if not sprite then return end
-
+function cursor:new(sprite, x, y)
+    if not sprite then game.error("Cannot create a cursor: sprite was not provided.") return end
     x = x or 0
     y = y or 0
 
     local new = setmetatable(object:new(), self)
-    new.name = game.utils.split(file_name, ".")[1] or file_name
+    new.name = sprite.name
     new.sprite = sprite
     new.x_hot = x
     new.y_hot = y
@@ -44,9 +38,6 @@ end
 
 
 function cursor:destroy()
-    if self.sprite then
-        self.sprite:destroy()
-    end
     object.destroy(self)
 end
 

@@ -7,7 +7,8 @@ local utils = game.utils
 ---@field y number Y position inside the parent where 0 - the top most pixel, 1 - the bottom most pixel, 0.5 - center.
 ---@field width number Width where 0 covers 0% of the parent's width, 1 covers 100% of the parent's width.
 ---@field active boolean True if the element is visible and can be interacted, otherwise false.
----@field transparency number Transparency where 0 - fully visible, 1 - fully transparent,
+---@field color table<number> Сolor of the element. Table of type {r,g,b} where r,g and b are numbers from 0 to 1.
+---@field opacity number Opacity where 0 - invisible, 1 - fully visible.
 ---@field height number Height where 0 covers 0% of the parent's height, 1 covers 100% of the parent's height.
 ---@field parent ui_element|scene|nil Parent UI element. To change use ui_element:set_parent().
 ---@field children table<ui_element> Children UI elements.
@@ -21,7 +22,8 @@ local ui_element = {
     height = nil,
 
     active = nil,
-    transparency = nil,
+    color = nil,
+    opacity = nil,
 
     parent = nil,
     children = nil,
@@ -44,7 +46,7 @@ function ui_element:draw()
     local x,y = self:get_position()
     local width,height = self:get_size()
 
-    utils.apply_transparency(self.transparency)
+    utils.set_color(self.color, self.opacity)
     love.graphics.rectangle("fill", x, y, width, height)
     utils.reset_color()
 end
@@ -54,6 +56,9 @@ end
 ---@param y integer Y position to check.
 ---@return boolean
 function ui_element:does_overlap(x,y)
+    x = x or 0
+    y = y or 0
+
     local ox,oy = self:get_position()
     local width,height = self:get_size()
 
@@ -64,6 +69,9 @@ end
 ---@param x integer New width in pixels.
 ---@param y integer New height in pixels.
 function ui_element:set_position(x,y)
+    x = x or 0
+    y = y or 0
+
     local ox,oy = self:get_position()
     local ow,oh = self:get_size()
     self.x = x / (ox + ow)
@@ -74,6 +82,9 @@ end
 ---@param width integer New width in pixels.
 ---@param height integer New height in pixels.
 function ui_element:set_size(width, height)
+    width = width or 0
+    height = height or 0
+
     local ow,oh = self:get_size()
     self.width = width / ow * self.width
     self.height = height / oh * self.height
@@ -140,16 +151,18 @@ function ui_element:set_parent(parent)
 end
 
 --- Creates a new UI element.
----@param scene scene Scene to add this element to.
+---@param parent ui_element|scene Initial parent of the UI element.
 ---@param layer integer|nil Initial layer to draw the component on. Should be 1000 or higher. Default is 1000.
 ---@param x number|nil X position on the screen from 0 to 1. Default is 0.
 ---@param y number|nil Y position on the screen where 0 to 1. Default is 0.
 ---@param width number|nil Width from 0 to 1. Default is 0.5.
 ---@param height number|nil Height from 0 to 1. Default is 0.5.
----@param parent ui_element|scene|nil Initial parent of the UI element.
 ---@return ui_element|nil
-function ui_element:new(scene, layer, x, y, width, height, parent)
-    if not scene then game.error("Cannot create a new UI element: scene was not provided.") return end
+function ui_element:new(parent, layer, x, y, width, height)
+    if not parent then game.error("Cannot create a new UI element: parent was not provided.") return end
+
+    local scene = parent.scene or parent
+    if not scene then game.error("Cannot create a new UI element: parent is not a scene or a UI element.") return end
 
     local new = setmetatable(scene_component:new(scene,layer or 1000), self)
 
@@ -160,7 +173,8 @@ function ui_element:new(scene, layer, x, y, width, height, parent)
     new.height = (height and utils.clamp(height, 0, 1)) or 0.5
 
     new.active = true
-    new.transparency = 0.5
+    new.color = {1,1,1}
+    new.opacity = 1
 
     new.on_mouse_enter = event:new()
     new.on_mouse_leave = event:new()

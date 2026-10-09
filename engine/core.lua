@@ -22,9 +22,9 @@ game.types.event_handle = require("engine.types.event_handle")
 game.types.event = require("engine.types.event")
 
 game.object_handler = require("engine.substrate.object_handler")
-
 game.audio_handler = require("engine.audio.audio_handler")
 game.graphics_handler = require("engine.graphics.graphics_handler")
+game.asset_handler = require("engine.assets.asset_handler")
 
 game.mouse = require("engine.input.mouse")
 game.keyboard = require("engine.input.keyboard")
@@ -32,6 +32,7 @@ game.keyboard = require("engine.input.keyboard")
 game.assets = {}
 game.assets.sprite = require("engine.assets.sprite")
 game.assets.sprite_sheet = require("engine.assets.sprite_sheet")
+game.assets.font = require("engine.assets.font")
 
 game.scenes = {}
 game.scenes.scene = require("engine.graphics.scenes.scene")
@@ -42,6 +43,7 @@ game.input.cursor = require("engine.input.cursor")
 
 game.ui = {}
 game.ui.ui_element = require("engine.graphics.ui.ui_element")
+game.ui.text_label = require("engine.graphics.ui.text_label")
 
 --------------------------------------------
 
@@ -51,6 +53,7 @@ game.on_quit = game.types.event:new()
 
 function game:load()
     self.appdata:init()
+    self.asset_handler:init()
     self.graphics_handler:init()
 
     self.log("Engine was successfully initialized.")

@@ -67,11 +67,18 @@ function utils.clamp(x, min, max)
     return x
 end
 
---- Applies transparency on the current drawing color.
---- @param transparency number Number from 0 to 1. 0 - fully visible, 1 - fully transparent.
-function utils.apply_transparency(transparency)
+--- Sets the current drawing color.
+---@param color table<number> Сolor of the element. Table of type {r,g,b} where r,g and b are numbers from 0 to 1.
+---@param opacity number|nil Opacity where 0 - invisible, 1 - fully visible. Default is 1.
+function utils.set_color(color, opacity)
+    love.graphics.setColor(color[1], color[2], color[3], opacity or 1)
+end
+
+--- Applies opacity on the current drawing color.
+--- @param opacity number Number from 0 to 1. 0 - fully invisible, 1 - fully visible.
+function utils.apply_opacity(opacity)
     local r,g,b,a = love.graphics.getColor()
-    love.graphics.setColor(r,g,b,a * transparency)
+    love.graphics.setColor(r,g,b,a * opacity)
 end
 
 --- Resets the current drawing color to white.
@@ -106,6 +113,15 @@ function utils.reverse_iterate(dict, func)
         local res = func(k,v)
         if res then return res end
     end
+end
+
+--- Gets the file name from the file path without extension.
+---@param file_path string Path of the file.
+---@return string|nil name File name without extension or nil if file_path is invalid.
+function utils.get_file_name(file_path)
+    local path_split = utils.split(file_path, "/")
+    local file_name = path_split[#path_split]
+    return utils.split(file_name, ".")[1] or file_name
 end
 
 return utils

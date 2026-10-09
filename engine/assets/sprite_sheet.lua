@@ -1,6 +1,7 @@
 local object = game.types.object
 
----@class sprite_sheet
+---@class sprite_sheet:object
+---@field name string Name of the sprite sheet.
 ---@field image love.image Main image of the sprite sheet.
 ---@field width integer Width of the main image in pixels.
 ---@field height integer Height of the main image in pixels.
@@ -8,6 +9,7 @@ local object = game.types.object
 ---@field quad_width integer Width of one quad in pixels.
 ---@field quad_height integer Height of one quad in pixels.
 local sprite_sheet = {
+    name = nil,
     image = nil,
     width = nil,
     height = nil,
@@ -22,12 +24,13 @@ sprite_sheet.__newindex = game.utils.get_readonly_func({"image", "width", "heigh
 setmetatable(sprite_sheet, object)
 
 --- Creates a new sprite sheet.
----@param file_path string Path of the sprite sheet relative to the assets.
+---@param file_path string Path of the sprite sheet relative to the assets/sprites.
 ---@param width integer Width of one quad in pixels.
 ---@param height integer Height of one quad in pixels.
 ---@return sprite_sheet|nil
 function sprite_sheet:new(file_path, width, height)
     if not file_path then game.error("Cannot create a new sprite sheet: file_path was not provided.") return end
+    local file_path = "assets/sprites/"..file_path
     if not love.filesystem.getInfo(file_path) then game.error("Cannot create a new sprite sheet: file_path is incorrect.") return end
 
     local quads = {}
@@ -42,6 +45,7 @@ function sprite_sheet:new(file_path, width, height)
     end
 
     local new = setmetatable(object:new(), self)
+    new.name = game.utils.get_file_name(file_path)
     new.image = image
     new.width = image_width
     new.height = image_height
@@ -59,7 +63,9 @@ function sprite_sheet:destroy()
     end
     if self.quads then
         for _,quad in pairs(self.quads) do
-            quad:release()
+            if quad then
+                quad:release()
+            end
         end
     end
     object.destroy(self)

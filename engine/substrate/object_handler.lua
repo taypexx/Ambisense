@@ -30,6 +30,10 @@ function object_handler:destroy(object)
     local id = object.object_id
     self.objects[id] = nil
 
+    for k,_ in pairs(object) do
+        object[k] = nil
+    end
+
     game.log(string.format("Object %i was destroyed. Is nil: %s", id, tostring(object==nil)))
 end
 
