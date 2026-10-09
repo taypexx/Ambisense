@@ -41,6 +41,7 @@ function event_handle:new(event, func, is_once, ...)
     if not func then game.error("Cannot create an event_handle: func is not provided.") return end
 
     local new = setmetatable(object:new(), self)
+    new.event = event
     new.func = func
     new.is_once = is_once or false
     
