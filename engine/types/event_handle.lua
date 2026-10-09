@@ -56,7 +56,7 @@ end
 function event_handle:destroy()
     local i = game.utils.table_find(self.event.handles, self)
     if i then
-        table.remove(self.event.handles, self)
+        table.remove(self.event.handles, i)
     end
     object.destroy(self)
 end

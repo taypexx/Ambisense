@@ -21,18 +21,7 @@ return function()
         )
         elem:set_parent(main_scene)
 
-        elem.on_mouse_enter:sub_once(function ()
-            game.log("Mouse enter "..elem.object_id)
-        end)
-        elem.on_mouse_leave:sub_once(function ()
-            game.log("Mouse leave "..elem.object_id)
-        end)
-        elem.on_mouse_down:sub(function ()
-            game.log("Mouse down "..elem.object_id)
-        end)
-        elem.on_mouse_up:sub(function ()
-            game.log("Mouse up "..elem.object_id)
-        end)
+        
 
         layer = layer + 1
     end)
