@@ -25,6 +25,7 @@ game.object_handler = require("engine.substrate.object_handler")
 game.audio_handler = require("engine.audio.audio_handler")
 game.graphics_handler = require("engine.graphics.graphics_handler")
 game.asset_handler = require("engine.assets.asset_handler")
+game.world_handler = require("engine.world.world_handler")
 
 game.mouse = require("engine.input.mouse")
 game.keyboard = require("engine.input.keyboard")
@@ -34,6 +35,7 @@ game.assets.sprite = require("engine.assets.sprite")
 game.assets.sprite_sheet = require("engine.assets.sprite_sheet")
 game.assets.font = require("engine.assets.font")
 game.assets.audio = require("engine.assets.audio")
+game.assets.map = require("engine.assets.map")
 
 game.scenes = {}
 game.scenes.scene = require("engine.graphics.scenes.scene")
@@ -56,14 +58,16 @@ function game:load()
     self.appdata:init()
     self.asset_handler:init()
     self.graphics_handler:init()
+    self.world_handler:init()
 
     self.log("Engine was successfully initialized.")
 end
 
 function game:update(dt)
-    self.on_update:fire(dt)
-
     self.audio_handler:update()
+    self.world_handler:update(dt)
+
+    self.on_update:fire(dt)
 end
 
 function game:quit()

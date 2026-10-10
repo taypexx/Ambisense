@@ -48,6 +48,7 @@ end
 ---@param y number|nil Y position on the screen where 0 to 1. Default is 0.
 ---@param width number|nil Width from 0 to 1. Default is 0.5.
 ---@param height number|nil Height from 0 to 1. Default is 0.5.
+---@return text_label|nil
 function text_label:new(parent, font, text, text_color, color, text_align, layer, x, y, width, height)
     if not parent then game.error("Cannot create a new text label: parent was not provided.") return end
 

@@ -129,4 +129,20 @@ function utils.get_file_name(file_path)
     return utils.split(file_name, ".")[1] or file_name
 end
 
+--- Converts tile coordinates to pixel coordinates.
+---@param i integer
+---@param j integer
+---@return integer,integer
+function utils.tile_to_pixel(i,j)
+    return (i - j)*32, (i + j)*16
+end
+
+--- Converts pixel coordinates to tile coordinates.
+---@param x integer
+---@param y integer
+---@return integer,integer
+function utils.pixel_to_tile(x,y)
+    return (x + 2*y)/64, (2*y - x)/64
+end
+
 return utils

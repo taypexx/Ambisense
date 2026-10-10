@@ -15,9 +15,13 @@ return function()
     local music = game.asset_handler.audios.music.frozen_sky
     music:play()
 
+    local i,j = 42,67
+    local x,y = game.utils.tile_to_pixel(i,j)
+    local i2,j2 = game.utils.pixel_to_tile(x,y)
+
     mouse.on_right_down:sub(function()
         local elem = game.ui.text_label:new(
-            main_scene, game.asset_handler:get_font("pixeloid_sans", 28),
+            main_scene, game.asset_handler:get_font("karmatic_arcade", 24),
             nil, nil, nil, nil, layer,
             love.mouse.getX()/love.graphics.getWidth(),
             love.mouse.getY()/love.graphics.getHeight(),

@@ -5,7 +5,8 @@
 local asset_handler = {
     fonts = {},
     sprites = {},
-    audios = {}
+    audios = {},
+    maps = {}
 }
 asset_handler.__index = asset_handler
 
@@ -60,8 +61,6 @@ function asset_handler:init()
                     else
                         game.log("Cannot load sprite: Failed to create the sprite object.", 1)
                     end
-                else
-                    game.log(string.format("Cannot load sprite: file_path %s is invalid.", sub_file_path), 1)
                 end
             end
         else
@@ -87,12 +86,32 @@ function asset_handler:init()
                     else
                         game.log("Cannot load audio: Failed to create the audio object.", 1)
                     end
-                else
-                    game.log(string.format("Cannot load audio: file_path %s is invalid.", sub_file_path), 1)
                 end
             end
         else
             game.log(string.format("Cannot load audio: file_path %s is invalid.", file_path), 1)
+        end
+    end
+
+    -- Loading maps
+    for _,folder_name in pairs(love.filesystem.getDirectoryItems("assets/maps")) do
+        local file_path = "assets/maps/"..folder_name
+        local info = love.filesystem.getInfo(file_path)
+        if info and info.type == "directory" then
+            for _,file_name in pairs(love.filesystem.getDirectoryItems(file_path)) do
+                local sub_file_path = file_path.."/"..file_name
+                local sub_info = love.filesystem.getInfo(sub_file_path)
+                if string.sub(file_name, -4) == ".lua" and sub_info and sub_info.type == "file" then
+                    local map = game.assets.map:new(file_path)
+                    if map then
+                        self.maps[map.name] = map
+                    else
+                        game.log("Cannot load map: Failed to create the map object.", 1)
+                    end
+                end
+            end
+        else
+            game.log(string.format("Cannot load map: file_path %s is invalid.", file_path), 1)
         end
     end
 end

@@ -63,6 +63,7 @@ end
 ---@param volume number|nil Initial volume of the audio. 0 - fully muted, 100 - full volume. Default is 50.
 ---@param loop boolean|nil If true loops the audio when it ends. Default is false.
 ---@param group audio_group|nil Initial audio group to assign this audio to.
+---@return audio|nil
 function audio:new(file_path, short, volume, loop, group)
     if not file_path then game.error("Cannot create a new audio: file_path was not provided.") return end
     if not love.filesystem.getInfo(file_path) then game.error("Cannot create a new audio: file_path is incorrect.") return end

@@ -85,6 +85,9 @@ end
 
 --- Draws the current scene.
 function graphics_handler:draw()
+    -- Draw the map
+    game.world_handler:draw()
+
     -- Draw the scene components first
     if self.currentScene then
         utils.iterate(self.currentScene.components, false, function (layer, components)
