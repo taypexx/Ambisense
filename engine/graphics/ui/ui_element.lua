@@ -2,6 +2,9 @@ local scene_component = game.scenes.scene_component
 local event = game.types.event
 local utils = game.utils
 
+local MIN_COMP_LAYER = 1000
+local MAX_COMP_LAYER = 9999
+
 ---@class ui_element:scene_component
 ---@field x number X position inside the parent where 0 - the left most pixel, 1 - the right most pixel, 0.5 - center.
 ---@field y number Y position inside the parent where 0 - the top most pixel, 1 - the bottom most pixel, 0.5 - center.
@@ -152,7 +155,7 @@ end
 
 --- Creates a new UI element.
 ---@param parent ui_element|scene Initial parent of the UI element.
----@param layer integer|nil Initial layer to draw the component on. Should be 1000 or higher. Default is 1000.
+---@param layer integer|nil Initial layer to draw the component on. Should be in range 1000~9999. Default is 1000.
 ---@param x number|nil X position on the screen from 0 to 1. Default is 0.
 ---@param y number|nil Y position on the screen where 0 to 1. Default is 0.
 ---@param width number|nil Width from 0 to 1. Default is 0.5.
@@ -164,7 +167,7 @@ function ui_element:new(parent, layer, x, y, width, height)
     local scene = parent.scene or parent
     if not scene then game.error("Cannot create a new UI element: parent is not a scene or a UI element.") return end
 
-    local new = setmetatable(scene_component:new(scene,layer or 1000), self)
+    local new = setmetatable(scene_component:new(scene,utils.clamp(layer or 1000, MIN_COMP_LAYER, MAX_COMP_LAYER)), self)
 
     new.x = (x and utils.clamp(x, 0, 1)) or 0
     new.y = (y and utils.clamp(y, 0, 1)) or 0

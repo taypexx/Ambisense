@@ -1,8 +1,10 @@
 local sti = require("sti")
-local object = game.types.object
 local utils = game.utils
+local scene_component = game.scenes.scene_component
 
----@class map:object
+local MAP_SCENE_LAYER = 99
+
+---@class map:scene_component
 ---@field name string Name of the map.
 ---@field sti any The STI map.
 local map = {
@@ -12,7 +14,7 @@ local map = {
 map.__index = map
 
 -- Inherits
-setmetatable(map, object)
+setmetatable(map, scene_component)
 
 --- Updates the map.
 function map:update(dt)
@@ -21,11 +23,19 @@ end
 
 --- Draws the map.
 function map:draw()
-    self.sti:draw()
+    local dx = game.world.camera.x
+    local dy = game.world.camera.y
+    local sx = game.world.camera.scale
+    local sy = game.world.camera.scale
+    self.sti:draw(dx,dy,sx,sy)
 end
 
 --- Initializes all processes happening on the map.
-function map:load()
+---@param scene scene Scene to load this map on.
+function map:load(scene)
+    if not scene then game.error("Cannot load the map: scene was not provided.") return end
+
+    self:assign(scene)
     -- Not sure abt this: self.sti:box2d_init(game.world_handler.world)
 end
 
@@ -43,7 +53,7 @@ function map:new(file_path)
     local sti_map = sti(file_path)
     if not sti_map then game.error("Cannot create a new map: Failed to initialize STI.") return end
 
-    local new = setmetatable(object:new(), self)
+    local new = setmetatable(scene_component:new(nil, MAP_SCENE_LAYER), self)
     new.name = utils.get_file_name(file_path) or file_path
     new.sti = sti_map
 
@@ -52,7 +62,7 @@ end
 
 --- Destroys the map.
 function map:destroy()
-    object.destroy(self)
+    scene_component.destroy(self)
 end
 
 return map

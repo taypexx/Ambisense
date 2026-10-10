@@ -18,17 +18,28 @@ function scene_component:does_overlap(x,y) end
 function scene_component:get_position() end
 function scene_component:get_size() end
 
+--- Assigns the component to the scene. Cannot be called if the scene was already set.
+---@param scene scene Scene to assign this component to.
+function scene_component:assign(scene)
+    if not scene then game.error("Cannot assign a scene component: scene was not provided.") return end
+    if self.scene then game.error("Cannot assign a scene component: scene was already assigned.") return end
+
+    self.scene = scene
+    self.scene:add_component(self)
+end
+
 --- Creates a new scene component.
----@param scene scene Scene to add this component to.
+---@param scene scene|nil Scene to add this component to.
 ---@param layer integer|nil Initial layer to draw the component on. 0-999 - game objects. 1000+ - interface.
 ---@return scene_component|nil
 function scene_component:new(scene, layer)
-    if not scene then game.error("Cannot create a new scene component: scene was not provided.") return end
-
     local new = setmetatable(object:new(), self)
     new.scene = scene
     new.layer = layer or 0
-    scene:add_component(new)
+
+    if scene then
+        scene:add_component(new)
+    end
 
     return new
 end

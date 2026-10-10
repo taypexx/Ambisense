@@ -83,18 +83,30 @@ function graphics_handler:register_scene(scene)
     game.log("Registered a new scene, scene_id: "..scene.scene_id)
 end
 
+local pop = false
 --- Draws the current scene.
 function graphics_handler:draw()
-    -- Draw the map
-    game.world_handler:draw()
-
-    -- Draw the scene components first
+    -- Draw the scene components
     if self.currentScene then
+        -- Apply camera for the 0-999 layer components (map and its objects)
+        pop = false
+        love.graphics.push()
+        love.graphics.translate(game.world.camera.x, game.world.camera.y)
+        love.graphics.scale(game.world.camera.scale, game.world.camera.scale)
+
         utils.iterate(self.currentScene.components, false, function (layer, components)
+            -- Return to normal screen pixel coordinates when drawing interface on layers 1000+.
+            if not pop and layer >= 1000 then
+                love.graphics.pop()
+                pop = true
+            end
+
             for _,component in pairs(components) do
                 component:draw()
             end
         end)
+
+        if not pop then love.graphics.pop() end
     else
         love.graphics.print("Loading...", love.graphics.getWidth()/2, love.graphics.getHeight()/2)
     end

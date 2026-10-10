@@ -102,7 +102,7 @@ function asset_handler:init()
                 local sub_file_path = file_path.."/"..file_name
                 local sub_info = love.filesystem.getInfo(sub_file_path)
                 if string.sub(file_name, -4) == ".lua" and sub_info and sub_info.type == "file" then
-                    local map = game.assets.map:new(file_path)
+                    local map = game.assets.map:new(sub_file_path)
                     if map then
                         self.maps[map.name] = map
                     else

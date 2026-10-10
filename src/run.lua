@@ -1,5 +1,21 @@
 -- Main function of the game (outside of engine code)
 
+--[[
+
+    Current structute idea:
+
+    Scenes:
+    Prologue
+    Title screen scene
+    Loading screen
+    Chart selection/home scene + map
+    Lore/novel scene + maps (different scenes)
+    Chart gameplay scene + maps (different scenes)
+
+    
+
+]]
+
 local scene = game.scenes.scene
 local mouse = game.mouse
 
@@ -14,10 +30,6 @@ return function()
 
     local music = game.asset_handler.audios.music.frozen_sky
     music:play()
-
-    local i,j = 42,67
-    local x,y = game.utils.tile_to_pixel(i,j)
-    local i2,j2 = game.utils.pixel_to_tile(x,y)
 
     mouse.on_right_down:sub(function()
         local elem = game.ui.text_label:new(
@@ -36,4 +48,8 @@ return function()
     mouse.on_left_down:sub(function ()
         bass:play()
     end)
+
+    game.world_handler:load_map("test", main_scene)
+    game.world.camera:to(-300, 220) -- figure out why it needs minus here it's just stupid bruh
+    game.world.camera:zoom(3)
 end

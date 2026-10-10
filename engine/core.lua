@@ -25,10 +25,13 @@ game.object_handler = require("engine.substrate.object_handler")
 game.audio_handler = require("engine.audio.audio_handler")
 game.graphics_handler = require("engine.graphics.graphics_handler")
 game.asset_handler = require("engine.assets.asset_handler")
-game.world_handler = require("engine.world.world_handler")
 
 game.mouse = require("engine.input.mouse")
 game.keyboard = require("engine.input.keyboard")
+
+game.scenes = {}
+game.scenes.scene = require("engine.graphics.scenes.scene")
+game.scenes.scene_component = require("engine.graphics.scenes.scene_component")
 
 game.assets = {}
 game.assets.sprite = require("engine.assets.sprite")
@@ -37,16 +40,17 @@ game.assets.font = require("engine.assets.font")
 game.assets.audio = require("engine.assets.audio")
 game.assets.map = require("engine.assets.map")
 
-game.scenes = {}
-game.scenes.scene = require("engine.graphics.scenes.scene")
-game.scenes.scene_component = require("engine.graphics.scenes.scene_component")
-
 game.input = {}
 game.input.cursor = require("engine.input.cursor")
 
 game.ui = {}
 game.ui.ui_element = require("engine.graphics.ui.ui_element")
 game.ui.text_label = require("engine.graphics.ui.text_label")
+
+game.world = {}
+game.world.map_component = require("engine.world.map_component")
+game.world.camera = require("engine.world.camera")
+game.world_handler = require("engine.world.world_handler")
 
 --------------------------------------------
 

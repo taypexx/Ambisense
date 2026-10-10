@@ -13,5 +13,8 @@
         "return-type-mismatch",
         "param-type-mismatch",
         "assign-type-mismatch"
+    ],
+    "Lua.workspace.ignoreDir": [
+        "**/sti/**"
     ]
 }
