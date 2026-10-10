@@ -35,7 +35,7 @@ function sprite:new_from_image(image, name)
 end
 
 --- Creates a new sprite from file.
----@param file_path string Path of the sprite relative to the assets.
+---@param file_path string Path of the sprite.
 ---@return sprite|nil
 function sprite:new_from_file(file_path)
     if not file_path then game.error("Cannot create a new sprite: file_path was not provided.") return end

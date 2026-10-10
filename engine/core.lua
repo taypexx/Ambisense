@@ -33,6 +33,7 @@ game.assets = {}
 game.assets.sprite = require("engine.assets.sprite")
 game.assets.sprite_sheet = require("engine.assets.sprite_sheet")
 game.assets.font = require("engine.assets.font")
+game.assets.audio = require("engine.assets.audio")
 
 game.scenes = {}
 game.scenes.scene = require("engine.graphics.scenes.scene")
@@ -62,7 +63,7 @@ end
 function game:update(dt)
     self.on_update:fire(dt)
 
-
+    self.audio_handler:update()
 end
 
 function game:quit()

@@ -86,29 +86,34 @@ function utils.reset_color()
     love.graphics.setColor(1,1,1,1)
 end
 
-local reverse_keys_cache = {}
+local keys_cache = {}
 
 --- Iterates through the dictionary and calls the function for every pair. Returns the first non-nil result from the function.
----@param dict table A dictionary to reverse (based on its keys).
+---@param dict table A dictionary to iterate (based on its keys).
 ---@param func function A function to be called for every pair. Key and value will be provided as arguments.
+---@param reverse boolean|false Whether to iterate the dictionary in reverse.
 ---@return any
-function utils.reverse_iterate(dict, func)
+function utils.iterate(dict, reverse, func)
     -- Clear previous keys without deleting the table (no GC pressure)
-    for i = 1, #reverse_keys_cache do reverse_keys_cache[i] = nil end
+    for i = 1, #keys_cache do keys_cache[i] = nil end
     
     -- Extract keys
     local count = 0
     for k in pairs(dict) do
         count = count + 1
-        reverse_keys_cache[count] = k
+        keys_cache[count] = k
     end
     
     -- Sort (Lua's table.sort is highly optimized when not creating new functions)
-    table.sort(reverse_keys_cache, function(a, b) return a > b end)
+    if reverse then
+        table.sort(keys_cache, function(a, b) return a > b end)
+    else
+        table.sort(keys_cache, function(a, b) return a < b end)
+    end
     
     -- Use a standard numeric loop instead of an iterator function
     for i = 1, count do
-        local k = reverse_keys_cache[i]
+        local k = keys_cache[i]
         local v = dict[k]
         local res = func(k,v)
         if res then return res end

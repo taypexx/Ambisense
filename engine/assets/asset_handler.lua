@@ -1,9 +1,11 @@
 ---@class asset_handler
 ---@field fonts table<string, font> Table of fonts. Key is the name of the font, value is the font object.
 ---@field sprites table<string, table<string, sprite|sprite_sheet>> Table of sprites|sprite sheets. Key is the name of the folder, value is the table where key is the sprite|sprite sheet name and value is the sprite|sprite sheet object.
+---@field audios table<string, table<string, audio>> Table of audios. Key is the name of the folder, value is the table where key is the audio name and value is the audio object.
 local asset_handler = {
     fonts = {},
     sprites = {},
+    audios = {}
 }
 asset_handler.__index = asset_handler
 
@@ -64,6 +66,33 @@ function asset_handler:init()
             end
         else
             game.log(string.format("Cannot load sprite: file_path %s is invalid.", file_path), 1)
+        end
+    end
+
+    -- Loading audio
+    for _,folder_name in pairs(love.filesystem.getDirectoryItems("assets/audio")) do
+        local file_path = "assets/audio/"..folder_name
+        local info = love.filesystem.getInfo(file_path)
+        if info and info.type == "directory" then
+            for _,file_name in pairs(love.filesystem.getDirectoryItems(file_path)) do
+                local sub_file_path = file_path.."/"..file_name
+                local sub_info = love.filesystem.getInfo(sub_file_path)
+                if sub_info and sub_info.type == "file" then
+                    local audio = game.assets.audio:new(sub_file_path, folder_name == "sfx")
+                    if audio then
+                        if not self.audios[folder_name] then
+                            self.audios[folder_name] = {}
+                        end
+                        self.audios[folder_name][audio.name] = audio
+                    else
+                        game.log("Cannot load audio: Failed to create the audio object.", 1)
+                    end
+                else
+                    game.log(string.format("Cannot load audio: file_path %s is invalid.", sub_file_path), 1)
+                end
+            end
+        else
+            game.log(string.format("Cannot load audio: file_path %s is invalid.", file_path), 1)
         end
     end
 end

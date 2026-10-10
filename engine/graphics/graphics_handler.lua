@@ -20,7 +20,7 @@ graphics_handler.__index = graphics_handler
 function graphics_handler:get_top_component(x,y)
     if not self.currentScene then return end
 
-    return utils.reverse_iterate(self.currentScene.components, function (layer, components)
+    return utils.iterate(self.currentScene.components, true, function (layer, components)
         for _,component in pairs(components) do
             if component:does_overlap(x,y) then
                 return component
@@ -87,11 +87,11 @@ end
 function graphics_handler:draw()
     -- Draw the scene components first
     if self.currentScene then
-        for layer,components in pairs(self.currentScene.components) do
+        utils.iterate(self.currentScene.components, false, function (layer, components)
             for _,component in pairs(components) do
                 component:draw()
             end
-        end
+        end)
     else
         love.graphics.print("Loading...", love.graphics.getWidth()/2, love.graphics.getHeight()/2)
     end

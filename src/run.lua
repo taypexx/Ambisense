@@ -12,6 +12,9 @@ return function()
 
     local layer = 1000
 
+    local music = game.asset_handler.audios.music.frozen_sky
+    music:play()
+
     mouse.on_right_down:sub(function()
         local elem = game.ui.text_label:new(
             main_scene, game.asset_handler:get_font("pixeloid_sans", 28),
@@ -23,5 +26,10 @@ return function()
         elem:set_parent(main_scene)
 
         layer = layer + 1
+    end)
+
+    local bass = game.asset_handler.audios.sfx.bass
+    mouse.on_left_down:sub(function ()
+        bass:play()
     end)
 end
