@@ -25,9 +25,8 @@ end
 function map:draw()
     local dx = game.world.camera.x
     local dy = game.world.camera.y
-    local sx = game.world.camera.scale
-    local sy = game.world.camera.scale
-    self.sti:draw(dx,dy,sx,sy)
+    local sc = game.world.camera.scale
+    self.sti:draw(dx,dy,sc,sc)
 end
 
 --- Initializes all processes happening on the map.

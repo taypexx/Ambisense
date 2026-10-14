@@ -50,6 +50,7 @@ return function()
     end)
 
     game.world_handler:load_map("test", main_scene)
-    game.world.camera:to(-300, 220) -- figure out why it needs minus here it's just stupid bruh
-    game.world.camera:zoom(3)
+
+    game.world.camera:to(0,0) -- figure out why it needs minus here it's just stupid bruh
+    game.world.camera:zoom(1)
 end
