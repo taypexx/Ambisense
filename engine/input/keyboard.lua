@@ -10,6 +10,13 @@ local keyboard = {
 keyboard.__index = keyboard
 keyboard.__newindex = game.utils.get_readonly_func({"on_key_down", "on_key_up"})
 
+--- Checks whether the key is pressed right now.
+---@param key string Key that is being checked. All key strings: https://www.love2d.org/wiki/Scancode.
+---@return boolean pressed True if the key is pressed, otherwise false.
+function keyboard:is_pressed(key)
+    return love.keyboard.isDown(key)
+end
+
 function love.keypressed(key, scancode)
     keyboard.on_key_down:fire(scancode)
 end

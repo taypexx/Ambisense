@@ -34,7 +34,7 @@ function world_handler:load_map(map_name, scene)
 
     -- Set camera to default settings.
     camera:set_mode("static")
-    camera:to(0,0)
+    camera:to()
     camera:zoom(1)
 
     self.current_map = map

@@ -21,6 +21,9 @@ game.types.object = require("engine.types.object")
 game.types.event_handle = require("engine.types.event_handle")
 game.types.event = require("engine.types.event")
 
+game.tween = require("engine.substrate.tweening.tween")
+game.tween_task = require("engine.substrate.tweening.tween_task")
+
 game.object_handler = require("engine.substrate.object_handler")
 game.audio_handler = require("engine.audio.audio_handler")
 game.graphics_handler = require("engine.graphics.graphics_handler")
@@ -70,6 +73,8 @@ end
 function game:update(dt)
     self.audio_handler:update()
     self.world_handler:update(dt)
+    self.world.camera:update(dt)
+    self.tween:update()
 
     self.on_update:fire(dt)
 end

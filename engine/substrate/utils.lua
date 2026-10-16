@@ -55,13 +55,13 @@ end
 
 --- Clamps the given value between min and max.
 ---@param x number The number to clamp.
----@param min number Minimum value allowed.
----@param max number Maximum value allowed.
+---@param min number|nil Minimum value allowed.
+---@param max number|nil Maximum value allowed.
 ---@return number x_clamped Clamped value.
 function utils.clamp(x, min, max)
-    if x < min then
+    if min and x < min then
         return min
-    elseif x > max then
+    elseif max and x > max then
         return max
     end
     return x

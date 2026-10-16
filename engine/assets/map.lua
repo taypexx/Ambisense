@@ -23,10 +23,10 @@ end
 
 --- Draws the map.
 function map:draw()
-    local dx = game.world.camera.x
-    local dy = game.world.camera.y
-    local sc = game.world.camera.scale
-    self.sti:draw(dx,dy,sc,sc)
+    local camera = game.world.camera
+    local x,y = camera:get_screen_pos(0,0)
+    local scale = camera.scale
+    self.sti:draw(x/scale, y/scale, scale, scale)
 end
 
 --- Initializes all processes happening on the map.

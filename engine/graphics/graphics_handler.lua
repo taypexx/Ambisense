@@ -1,5 +1,8 @@
 local utils = game.utils
 
+local ORIG_WIDTH = 1280
+local ORIG_HEIGHT = 720
+
 ---@class graphics_handler
 ---@field last_id integer The ID of the last created scene.
 ---@field scenes table<integer,scene> A dictionary of scenes where ID is the key.
@@ -22,7 +25,7 @@ function graphics_handler:get_top_component(x,y)
 
     return utils.iterate(self.currentScene.components, true, function (layer, components)
         for _,component in pairs(components) do
-            if component:does_overlap(x,y) then
+            if component.x and component:does_overlap(x,y) then
                 return component
             end
         end
@@ -35,10 +38,12 @@ function graphics_handler:process_mouse_position(x,y,dx,dy)
     local prev_elem = self:get_top_component(x-dx,y-dy)
     if elem == prev_elem then return end
 
-    if elem and elem.on_mouse_enter then
+    if elem then
         game.mouse.current_component = elem
-        elem.on_mouse_enter:fire()
-    elseif elem == nil then
+        if elem.on_mouse_enter then
+           elem.on_mouse_enter:fire() 
+        end
+    else
         game.mouse.current_component = nil
     end
     if prev_elem and prev_elem.on_mouse_leave then
@@ -83,30 +88,15 @@ function graphics_handler:register_scene(scene)
     game.log("Registered a new scene, scene_id: "..scene.scene_id)
 end
 
-local pop = false
 --- Draws the current scene.
 function graphics_handler:draw()
     -- Draw the scene components
     if self.currentScene then
-        -- Apply camera for the 0-999 layer components (map and its objects)
-        pop = false
-        love.graphics.push()
-        love.graphics.translate(game.world.camera.x, game.world.camera.y)
-        love.graphics.scale(game.world.camera.scale, game.world.camera.scale)
-
         utils.iterate(self.currentScene.components, false, function (layer, components)
-            -- Return to normal screen pixel coordinates when drawing interface on layers 1000+.
-            if not pop and layer >= 1000 then
-                love.graphics.pop()
-                pop = true
-            end
-
             for _,component in pairs(components) do
                 component:draw()
             end
         end)
-
-        if not pop then love.graphics.pop() end
     else
         love.graphics.print("Loading...", love.graphics.getWidth()/2, love.graphics.getHeight()/2)
     end
@@ -115,7 +105,7 @@ function graphics_handler:draw()
     local mouse = game.mouse
     local cursor = mouse.current_cursor
     if love.window.hasMouseFocus() and cursor and mouse.cursor_visible then
-        love.graphics.draw(cursor.sprite.image, mouse:getX(), mouse:getY())
+        love.graphics.draw(cursor.sprite.image, mouse:get_pos())
     end
 end
 

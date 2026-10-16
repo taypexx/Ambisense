@@ -26,7 +26,9 @@ function text_label:draw()
     ui_element.draw(self)
 
     -- Draw the text
-    love.graphics.setFont(self.font)
+    if self.font then
+        love.graphics.setFont(self.font)
+    end
     game.utils.set_color(self.text_color, self.text_opacity)
 
     local x,y = self:get_position()

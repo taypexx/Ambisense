@@ -54,31 +54,16 @@ function ui_element:draw()
     utils.reset_color()
 end
 
---- Tells whether the given position overlaps with the element.
----@param x integer X position to check.
----@param y integer Y position to check.
----@return boolean
-function ui_element:does_overlap(x,y)
-    x = x or 0
-    y = y or 0
-
-    local ox,oy = self:get_position()
-    local width,height = self:get_size()
-
-    return x >= ox and x <= ox + width and y >= oy and y <= oy + height
-end
-
 --- Sets the pixel position of the element. To change position relative to the parent change ui_element.x and ui_element.y.
----@param x integer New width in pixels.
----@param y integer New height in pixels.
+---@param x integer New X position in pixels.
+---@param y integer New Y position in pixels.
 function ui_element:set_position(x,y)
     x = x or 0
     y = y or 0
 
-    local ox,oy = self:get_position()
-    local ow,oh = self:get_size()
-    self.x = x / (ox + ow)
-    self.y = y / (oy + oh)
+    local pw,ph = self:get_parent_size()
+    self.x = x / pw
+    self.y = y / ph
 end
 
 --- Sets the pixel size of the element. To change size relative to the parent change ui_element.width and ui_element.height.
@@ -93,45 +78,58 @@ function ui_element:set_size(width, height)
     self.height = height / oh * self.height
 end
 
---- Gets the pixel position to render the element.
+--- Gets the pixel position to draw the element.
 ---@return integer,integer
 function ui_element:get_position()
     local x = 0
     local y = 0
 
     if self.parent then
-        local px,py
-        local pw,ph
-        if self.parent.parent then
-            px,py = self.parent:get_position()
-            pw,ph = self.parent:get_size()
-        else
-            px,py = 0,0
-            pw,ph = love.graphics.getPixelWidth(),love.graphics.getPixelHeight()
-        end
+        local px,py = self:get_parent_position()
+        local pw,ph = self:get_parent_size()
+        
         x = px + pw * self.x
         y = py + ph * self.y
     end
     return x,y
 end
 
---- Gets the pixel size to render the element.
+--- Gets the pixel size to draw the element.
 ---@return integer,integer
 function ui_element:get_size()
     local w = 0
     local h = 0
 
     if self.parent then
-        local pw,ph
-        if self.parent.parent then
-            pw,ph = self.parent:get_size()
-        else
-            pw,ph = love.graphics.getPixelWidth(),love.graphics.getPixelHeight()
-        end
+        local pw,ph = self:get_parent_size()
         w = pw * self.width
         h = ph * self.height
     end
     return w,h
+end
+
+--- Gets the parent position in pixels.
+---@return integer,integer
+function ui_element:get_parent_position()
+    local px,py
+    if self.parent and self.parent.parent then
+        px,py = self.parent:get_position()
+    else
+        px,py = 0,0
+    end
+    return px,py
+end
+
+--- Gets the parent size in pixels.
+---@return integer,integer
+function ui_element:get_parent_size()
+    local pw,ph
+    if self.parent.parent then
+        pw,ph = self.parent:get_size()
+    else
+        pw,ph = love.graphics.getPixelWidth(),love.graphics.getPixelHeight()
+    end
+    return pw,ph
 end
 
 --- Sets the parent of the UI element.

@@ -13,9 +13,25 @@ scene_component.__newindex = game.utils.get_readonly_func({"scene"})
 -- Inherits
 setmetatable(scene_component, object)
 
+--- Tells whether the given position overlaps with the element.
+---@param x integer X position on the screen to check.
+---@param y integer Y position on the screen to check.
+---@return boolean
+function scene_component:does_overlap(x,y)
+    x = x or 0
+    y = y or 0
+
+    local ox,oy = self:get_position()
+    local width,height = self:get_size()
+
+    return x >= ox and x <= ox + width and y >= oy and y <= oy + height
+end
+
+--- Placeholder for the draw function.
 function scene_component:draw() end
-function scene_component:does_overlap(x,y) end
+--- Placeholder for the screen position function.
 function scene_component:get_position() end
+--- Placeholder for the screen size function.
 function scene_component:get_size() end
 
 --- Assigns the component to the scene. Cannot be called if the scene was already set.

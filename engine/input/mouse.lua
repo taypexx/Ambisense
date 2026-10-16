@@ -31,8 +31,19 @@ local mouse = {
 mouse.__index = mouse
 mouse.__newindex = game.utils.get_readonly_func({"on_left_down", "on_left_up", "on_right_down", "on_right_up", "on_wheel_move"})
 
-function mouse:getX() return love.mouse.getX() end
-function mouse:getY() return love.mouse.getY() end
+--- Gets the current world coordinates at the mouse position.
+---@return number wx
+---@return number wy
+function mouse:get_world_pos()
+    return game.world.camera:get_world_pos(self:get_pos())
+end
+
+--- Gets the current screen positon of the mouse in pixels.
+---@return number X
+---@return number Y
+function mouse:get_pos() 
+    return love.mouse.getX(), love.mouse.getY()
+end
 
 --- Finds the cursor by its name and sets it as the current one.
 ---@param name string Name of the cursor.
