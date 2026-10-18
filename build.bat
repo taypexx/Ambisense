@@ -6,7 +6,7 @@ rmdir "build/output" /s /q
 md "build/output"
 
 echo Compressing the game...
-powershell Compress-Archive -LiteralPath 'assets','engine','src','main.lua' -Force -DestinationPath 'build/output/Ambisense'
+powershell Compress-Archive -LiteralPath 'assets','engine','src','sti','main.lua' -Force -DestinationPath 'build/output/Ambisense'
 
 cd "build/output"
 ren "Ambisense.zip" "Ambisense.love"
@@ -27,6 +27,3 @@ move /y "../manifest/AndroidManifest.xml" "android/love_decoded"
 call apktool b -o "android/Ambisense.apk" "android/love_decoded"
 
 if exist "Ambisense.zip" ( del "Ambisense.zip" )
-
-echo Build success.
-pause
