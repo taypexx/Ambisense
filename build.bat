@@ -6,7 +6,7 @@ rmdir "build/output" /s /q
 md "build/output"
 
 echo Compressing the game...
-powershell Compress-Archive -LiteralPath 'assets','engine','src','sti','main.lua' -Force -DestinationPath 'build/output/Ambisense'
+powershell Compress-Archive -LiteralPath 'assets','engine','src','sti','conf.lua','main.lua' -Force -DestinationPath 'build/output/Ambisense'
 
 cd "build/output"
 ren "Ambisense.zip" "Ambisense.love"

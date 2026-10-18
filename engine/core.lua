@@ -12,6 +12,8 @@ game = {
     input = {},
     world = {}
 }
+
+-- Proper indexing for the game table
 setmetatable(game, {
     __index = function (t,lib)
         for _,v in pairs({"", ".types", ".tweening"}) do
@@ -23,6 +25,7 @@ setmetatable(game, {
     end
 })
 
+-- Proper indexing for the internal tables inside game
 for cat,libs in pairs(game) do
     if type(libs) == "table" then
         setmetatable(libs, {
