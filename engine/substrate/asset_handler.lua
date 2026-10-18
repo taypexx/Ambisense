@@ -32,7 +32,7 @@ function asset_handler:init()
         local file_path = "assets/fonts/"..file_name
         local info = love.filesystem.getInfo(file_path)
         if info and not info.isDirectory then
-            local font = game.assets.font:new(file_name)
+            local font = game.graphics.assets.font:new(file_name)
             if font then
                 self.fonts[font.name] = font
             else
@@ -52,7 +52,7 @@ function asset_handler:init()
                 local sub_file_path = file_path.."/"..file_name
                 local sub_info = love.filesystem.getInfo(sub_file_path)
                 if sub_info and sub_info.type == "file" then
-                    local sprite = game.assets.sprite:new_from_file(sub_file_path)
+                    local sprite = game.graphics.assets.sprite:new_from_file(sub_file_path)
                     if sprite then
                         if not self.sprites[folder_name] then
                             self.sprites[folder_name] = {}
@@ -77,7 +77,7 @@ function asset_handler:init()
                 local sub_file_path = file_path.."/"..file_name
                 local sub_info = love.filesystem.getInfo(sub_file_path)
                 if sub_info and sub_info.type == "file" then
-                    local audio = game.assets.audio:new(sub_file_path, folder_name == "sfx")
+                    local audio = game.audio.audio:new(sub_file_path, folder_name == "sfx")
                     if audio then
                         if not self.audios[folder_name] then
                             self.audios[folder_name] = {}
@@ -102,7 +102,7 @@ function asset_handler:init()
                 local sub_file_path = file_path.."/"..file_name
                 local sub_info = love.filesystem.getInfo(sub_file_path)
                 if string.sub(file_name, -4) == ".lua" and sub_info and sub_info.type == "file" then
-                    local map = game.assets.map:new(sub_file_path)
+                    local map = game.world.map:new(sub_file_path)
                     if map then
                         self.maps[map.name] = map
                     else

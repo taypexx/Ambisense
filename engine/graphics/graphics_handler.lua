@@ -1,7 +1,5 @@
 local utils = game.utils
-
-local ORIG_WIDTH = 1280
-local ORIG_HEIGHT = 720
+local mouse = game.input.mouse
 
 ---@class graphics_handler
 ---@field last_id integer The ID of the last created scene.
@@ -39,12 +37,12 @@ function graphics_handler:process_mouse_position(x,y,dx,dy)
     if elem == prev_elem then return end
 
     if elem then
-        game.mouse.current_component = elem
+        mouse.current_component = elem
         if elem.on_mouse_enter then
            elem.on_mouse_enter:fire() 
         end
     else
-        game.mouse.current_component = nil
+        mouse.current_component = nil
     end
     if prev_elem and prev_elem.on_mouse_leave then
         prev_elem.on_mouse_leave:fire()
@@ -65,11 +63,21 @@ function graphics_handler:process_mouse_up(x,y)
     elem.on_mouse_up:fire(x,y)
 end
 
---- Switches the current scene to the given one.
+--- Switches the current scene to the given one and changes their active values.
 --- After switching the game will start rendering it.
 ---@param scene scene|nil
 function graphics_handler:switch_scene(scene)
+    if self.currentScene then
+        self.currentScene.active = false
+        self.currentScene.on_unload:fire()
+    end
+
     self.currentScene = scene
+    
+    if scene then
+        scene.active = true
+        scene.on_load:fire()
+    end
 end
 
 --- Registers a new scene.
@@ -102,18 +110,17 @@ function graphics_handler:draw()
     end
 
     -- Draw the cursor
-    local mouse = game.mouse
     local cursor = mouse.current_cursor
     if love.window.hasMouseFocus() and cursor and mouse.cursor_visible then
         love.graphics.draw(cursor.sprite.image, mouse:get_pos())
     end
 end
 
+-- Initializes graphics.
 function graphics_handler:init()
     -- Mouse and cursor setup
     love.mouse.setVisible(false)
-    
-    local mouse = game.mouse
+
     mouse:load_cursors()
     mouse:set_cursor("default")
 

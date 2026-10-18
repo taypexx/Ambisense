@@ -31,9 +31,9 @@ All abstract concepts should be kept in the engine section.
 Everything else will be built on top of that.
 
 ### Coordinates and game look
-The main game view is isometric 2D with some elements of 3D.
+The main game view is plain 2D with some parallax elements for the 3D effect.
 Coordinates start at top left corner.
-Design-wise everything is pixelated. No pixel consistency.
+Design-wise half of the game is pixelated.
 
 ### Objects and instantiation
 Everything that can be instantiated must derive from Object (engine).

@@ -1,15 +1,17 @@
 local sti = require("sti")
 local utils = game.utils
-local scene_component = game.scenes.scene_component
+local scene_component = game.graphics.scene_component
 
 local MAP_SCENE_LAYER = 99
 
 ---@class map:scene_component
 ---@field name string Name of the map.
 ---@field sti any The STI map.
+---@field bgs table<integer,background> All map parallax backgrounds.
 local map = {
     name = nil,
-    sti = nil
+    sti = nil,
+    bgs = nil
 }
 map.__index = map
 
@@ -26,6 +28,7 @@ function map:draw()
     local camera = game.world.camera
     local x,y = camera:get_screen_pos(0,0)
     local scale = camera.scale
+
     self.sti:draw(x/scale, y/scale, scale, scale)
 end
 
@@ -55,6 +58,34 @@ function map:new(file_path)
     local new = setmetatable(scene_component:new(nil, MAP_SCENE_LAYER), self)
     new.name = utils.get_file_name(file_path) or file_path
     new.sti = sti_map
+
+    local camera = game.world.camera
+
+    -- Makes the background layers repeat
+    for _,layer in pairs(new.sti.layers) do
+        if layer.image and string.sub(layer.name, 1, 2) == "bg" then
+            layer.visible = false
+
+            local image = layer.image
+            image:setWrap("repeat", "repeat")
+
+            local iw, ih = image:getDimensions()
+            local sw, sh = love.graphics.getDimensions()
+            local quad = love.graphics.newQuad(0, 0, sw, sh, iw, ih)
+
+            layer.draw = function()
+                local px = math.floor(camera.x * (self.parallaxx or 1))
+                local py = math.floor(camera.y * (self.parallaxy or 1))
+                
+                quad:setViewport(
+                    -px, -py,
+                    sw, sh,
+                    iw, ih
+                )
+                love.graphics.draw(image, quad, 0, 0)
+            end
+        end
+    end
 
     return new
 end

@@ -1,4 +1,5 @@
-local object = game.types.object
+local object = game.object
+local utils = game.utils
 
 ---@class scene_component:object
 ---@field scene scene Scene of the component.
@@ -8,7 +9,7 @@ local scene_component = {
     layer = nil,
 }
 scene_component.__index = scene_component
-scene_component.__newindex = game.utils.get_readonly_func({"scene"})
+scene_component.__newindex = utils.get_readonly_func({"scene"})
 
 -- Inherits
 setmetatable(scene_component, object)

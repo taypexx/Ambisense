@@ -1,4 +1,5 @@
-local object = game.types.object
+local object = game.object
+local utils = game.utils
 
 ---@class event_handle:object
 ---@field event event The event this handle is attached to.
@@ -54,7 +55,7 @@ end
 
 --- Destroys the handle and removes itself from the event handles.
 function event_handle:destroy()
-    local i = game.utils.table_find(self.event.handles, self)
+    local i = utils.table_find(self.event.handles, self)
     if i then
         table.remove(self.event.handles, i)
     end

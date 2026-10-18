@@ -1,3 +1,5 @@
+local utils = game.utils
+
 ---@class tween
 ---@field tasks table<tween_task> All tasks in progress.
 ---@field funcs table<string,function> Tweening functions table where key is the name of the function and value is the function itself.
@@ -13,7 +15,7 @@ local tween = {
     }
 }
 tween.__index = tween
-tween.__newindex = game.utils.get_readonly_func({"tasks", "funcs"})
+tween.__newindex = utils.get_readonly_func({"tasks", "funcs"})
 
 --- Tweens the number value in the table.
 ---@param t table Table containing a number value.

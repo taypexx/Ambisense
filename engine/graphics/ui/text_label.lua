@@ -1,4 +1,5 @@
-local ui_element = game.ui.ui_element
+local ui_element = game.graphics.ui.ui_element
+local utils = game.utils
 
 ---@class text_label:ui_element
 ---@field font love.font The font of the text label.
@@ -29,13 +30,13 @@ function text_label:draw()
     if self.font then
         love.graphics.setFont(self.font)
     end
-    game.utils.set_color(self.text_color, self.text_opacity)
+    utils.set_color(self.text_color, self.text_opacity)
 
     local x,y = self:get_position()
     local width,height = self:get_size()
 
     love.graphics.printf(self.text, x, y, width, self.text_align)
-    game.utils.reset_color()
+    utils.reset_color()
 end
 
 --- Creates a new text label.

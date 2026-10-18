@@ -1,4 +1,5 @@
-local event = game.types.event
+local event = game.event
+local utils = game.utils
 
 ---@class keyboard
 ---@field on_key_down event Fires when a keyboard button is pressed. Arguments: key:string - Key that was pressed. All key strings: https://www.love2d.org/wiki/Scancode.
@@ -8,7 +9,7 @@ local keyboard = {
     on_key_up = event:new()
 }
 keyboard.__index = keyboard
-keyboard.__newindex = game.utils.get_readonly_func({"on_key_down", "on_key_up"})
+keyboard.__newindex = utils.get_readonly_func({"on_key_down", "on_key_up"})
 
 --- Checks whether the key is pressed right now.
 ---@param key string Key that is being checked. All key strings: https://www.love2d.org/wiki/Scancode.

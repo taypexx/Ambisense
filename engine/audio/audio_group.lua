@@ -1,4 +1,4 @@
-local object = game.types.object
+local object = game.object
 local utils = game.utils
 
 local MIN_VOLUME = 0

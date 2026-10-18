@@ -1,4 +1,5 @@
-local object = game.types.object
+local object = game.object
+local utils = game.utils
 
 ---@class cursor:object
 ---@field name string Name of the cursor.
@@ -12,7 +13,7 @@ local cursor = {
     y_hot = nil
 }
 cursor.__index = cursor
-cursor.__newindex = game.utils.get_readonly_func({"name", "sprite"})
+cursor.__newindex = utils.get_readonly_func({"name", "sprite"})
 
 -- Inherits
 setmetatable(cursor, object)

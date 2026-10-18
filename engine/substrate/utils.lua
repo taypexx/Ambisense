@@ -1,6 +1,6 @@
 ---@class utils
 local utils = {}
-utils.__index = {}
+utils.__index = utils
 
 --- Returns a new function that can be used as __newindex for a class so that the field is read-only.
 ---@param fields table A table containing field names (strings) that are going to be read-only.

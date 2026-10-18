@@ -1,5 +1,5 @@
-local object = game.types.object
-local event_handle = game.types.event_handle
+local object = game.object
+local event_handle = game.event_handle
 
 ---@class event:object
 ---@field handles table<event_handle> A table of functions to be called when the event gets fired.

@@ -1,5 +1,6 @@
-local object = game.types.object
+local object = game.object
 local utils = game.utils
+local tween = game.tween
 
 ---@class tween_task:object
 ---@field table table Table containing a number value.
@@ -66,9 +67,9 @@ end
 
 --- Destroys the tween tasks and removes itself from the tween tasks.
 function tween_task:destroy()
-    local i = utils.table_find(game.tween.tasks, self)
+    local i = utils.table_find(tween.tasks, self)
     if i then
-        table.remove(game.tween.tasks, i)
+        table.remove(tween.tasks, i)
     end
     object.destroy(self)
 end

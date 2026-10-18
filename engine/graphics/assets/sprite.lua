@@ -1,4 +1,5 @@
-local object = game.types.object
+local object = game.object
+local utils = game.utils
 
 ---@class sprite:object
 ---@field name string Name of the sprite.
@@ -12,7 +13,7 @@ local sprite = {
     height = nil
 }
 sprite.__index = sprite
-sprite.__newindex = game.utils.get_readonly_func({"image", "width", "height"})
+sprite.__newindex = utils.get_readonly_func({"image", "width", "height"})
 
 -- Inherits
 setmetatable(sprite, object)
@@ -44,7 +45,7 @@ function sprite:new_from_file(file_path)
     local image = love.graphics.newImage(file_path)
     if not image then game.error("Cannot create a new sprite: Image is incorrect.") return end
 
-    local name = game.utils.get_file_name(file_path)
+    local name = utils.get_file_name(file_path)
     return self:new_from_image(image, name)
 end
 

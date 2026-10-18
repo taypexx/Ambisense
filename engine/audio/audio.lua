@@ -1,5 +1,6 @@
-local object = game.types.object
+local object = game.object
 local utils = game.utils
+local audio_handler = game.audio.audio_handler
 
 local MIN_VOLUME = 0
 local MAX_VOLUME = 100
@@ -32,7 +33,7 @@ function audio:play(from_start)
         local clone = self.source:clone()
         clone:seek(0)
         clone:play()
-        game.audio_handler:add_temp(clone)
+        audio_handler:add_temp(clone)
     else
         if from_start then
             self.source:seek(0)

@@ -1,4 +1,5 @@
-local object = game.types.object
+local object = game.object
+local utils = game.utils
 
 ---@class sprite_sheet:object
 ---@field name string Name of the sprite sheet.
@@ -18,7 +19,7 @@ local sprite_sheet = {
     quad_height = nil
 }
 sprite_sheet.__index = sprite_sheet
-sprite_sheet.__newindex = game.utils.get_readonly_func({"image", "width", "height", "quads", "quad_width", "quad_height"})
+sprite_sheet.__newindex = utils.get_readonly_func({"image", "width", "height", "quads", "quad_width", "quad_height"})
 
 -- Inherits
 setmetatable(sprite_sheet, object)
@@ -45,7 +46,7 @@ function sprite_sheet:new(file_path, width, height)
     end
 
     local new = setmetatable(object:new(), self)
-    new.name = game.utils.get_file_name(file_path)
+    new.name = utils.get_file_name(file_path)
     new.image = image
     new.width = image_width
     new.height = image_height

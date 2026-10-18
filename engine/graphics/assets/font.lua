@@ -1,4 +1,5 @@
-local object = game.types.object
+local object = game.object
+local utils = game.utils
 
 ---@class font:object
 ---@field name string The file name of the font.
@@ -8,7 +9,7 @@ local font = {
     fonts = nil
 }
 font.__index = font
-font.__newindex = game.utils.get_readonly_func({"name", "font"})
+font.__newindex = utils.get_readonly_func({"name", "font"})
 
 -- Inherits
 setmetatable(font, object)
@@ -22,7 +23,7 @@ function font:new(file_name)
     if not love.filesystem.getInfo(file_path) then game.error("Cannot create a new font: file_path is incorrect.") return end
 
     local new = setmetatable(object:new(), self)
-    new.name = game.utils.split(file_name, ".")[1] or file_name
+    new.name = utils.split(file_name, ".")[1] or file_name
     new.fonts = {}
 
     for _,size in ipairs({12, 14, 16, 18, 20, 24, 28, 32, 36, 48, 64, 72}) do

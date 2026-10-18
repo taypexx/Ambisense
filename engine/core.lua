@@ -3,76 +3,115 @@ Contains all core engine structures inside.
 It is also global so that you can access it from anywhere in the code.
 ]]
 
-game = {}
-game.__index = game
+game = {
+    audio = {},
+    graphics = {
+        assets = {},
+        ui = {}
+    },
+    input = {},
+    world = {}
+}
+setmetatable(game, {
+    __index = function (t,lib)
+        for _,v in pairs({"", ".types", ".tweening"}) do
+            local s,m = pcall(require, string.format("engine.substrate%s.%s", v, lib))
+            if s then
+                return m
+            end
+        end
+    end
+})
 
---------------------------------------------
+for cat,libs in pairs(game) do
+    if type(libs) == "table" then
+        setmetatable(libs, {
+            __index = function(t,lib)
+                if lib == "handler" then
+                    lib = string.format("%s_%s", cat, lib)
+                end
+                return require(string.format("engine.%s.%s", cat, lib))
+            end
+        })
 
-local error_handler = require("engine.substrate.error_handler")
+        for subcat, libs_ in pairs(libs) do
+            if type(libs_) == "table" then
+                setmetatable(libs_, {
+                    __index = function (t, lib_)
+                        return require(string.format("engine.%s.%s.%s", cat, subcat, lib_))
+                    end
+                })
+            end
+        end
+    end
+end
 
-game.appdata = require("engine.substrate.appdata")
-game.log = require("engine.substrate.log")
-game.error = error_handler.error
-game.error_handler = error_handler
+-- Substrate
 game.utils = require("engine.substrate.utils")
 
-game.types = {}
-game.types.object = require("engine.types.object")
-game.types.event_handle = require("engine.types.event_handle")
-game.types.event = require("engine.types.event")
+game.appdata = require("engine.substrate.appdata")
+game.asset_handler = require("engine.substrate.asset_handler")
+game.error_handler = require("engine.substrate.error_handler")
+game.error = game.error_handler.error
+game.log = require("engine.substrate.log")
+game.object_handler = require("engine.substrate.object_handler")
 
+-- Types
+game.object = require("engine.substrate.types.object")
+game.event = require("engine.substrate.types.event")
+game.event_handle = require("engine.substrate.types.event_handle")
+
+-- Tweens
 game.tween = require("engine.substrate.tweening.tween")
 game.tween_task = require("engine.substrate.tweening.tween_task")
 
-game.object_handler = require("engine.substrate.object_handler")
-game.audio_handler = require("engine.audio.audio_handler")
-game.graphics_handler = require("engine.graphics.graphics_handler")
-game.asset_handler = require("engine.assets.asset_handler")
+-- Audio
+game.audio.audio = require("engine.audio.audio")
+game.audio.group = require("engine.audio.audio_group")
+game.audio.handler = require("engine.audio.audio_handler")
 
-game.mouse = require("engine.input.mouse")
-game.keyboard = require("engine.input.keyboard")
+-- Graphics
+game.graphics.scene = require("engine.graphics.scene")
+game.graphics.scene_component = require("engine.graphics.scene_component")
+game.graphics.handler = require("engine.graphics.graphics_handler")
 
-game.scenes = {}
-game.scenes.scene = require("engine.graphics.scenes.scene")
-game.scenes.scene_component = require("engine.graphics.scenes.scene_component")
+game.graphics.assets.font = require("engine.graphics.assets.font")
+game.graphics.assets.sprite = require("engine.graphics.assets.sprite")
+game.graphics.assets.sprite_sheet = require("engine.graphics.assets.sprite_sheet")
+    
+game.graphics.ui.element = require("engine.graphics.ui.ui_element")
+game.graphics.ui.text_label = require("engine.graphics.ui.text_label")
 
-game.assets = {}
-game.assets.sprite = require("engine.assets.sprite")
-game.assets.sprite_sheet = require("engine.assets.sprite_sheet")
-game.assets.font = require("engine.assets.font")
-game.assets.audio = require("engine.assets.audio")
-game.assets.map = require("engine.assets.map")
-
-game.input = {}
+-- Input
 game.input.cursor = require("engine.input.cursor")
+game.input.mouse = require("engine.input.mouse")
+game.input.keyboard = require("engine.input.keyboard")
 
-game.ui = {}
-game.ui.ui_element = require("engine.graphics.ui.ui_element")
-game.ui.text_label = require("engine.graphics.ui.text_label")
-
-game.world = {}
-game.world.map_component = require("engine.world.map_component")
+-- World
 game.world.camera = require("engine.world.camera")
-game.world_handler = require("engine.world.world_handler")
+game.world.background = require("engine.world.background")
+game.world.map = require("engine.world.map")
+game.world.map_component = require("engine.world.map_component")
+game.world.handler = require("engine.world.world_handler")
+
+-- Events
+game.on_update = game.event:new()
+game.on_quit = game.event:new()
 
 --------------------------------------------
-
-game.on_update = game.types.event:new()
-game.on_quit = game.types.event:new()
-
 
 function game:load()
     self.appdata:init()
     self.asset_handler:init()
-    self.graphics_handler:init()
-    self.world_handler:init()
+    self.graphics.handler:init()
+    self.world.handler:init()
 
     self.log("Engine was successfully initialized.")
 end
 
 function game:update(dt)
-    self.audio_handler:update()
-    self.world_handler:update(dt)
+    self.audio.handler:update()
+    self.world.handler:update(dt)
     self.world.camera:update(dt)
     self.tween:update()
 

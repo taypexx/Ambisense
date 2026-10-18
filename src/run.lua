@@ -16,15 +16,16 @@
 
 ]]
 
-local scene = game.scenes.scene
+local scene = game.graphics.scene
 local camera = game.world.camera
-local mouse = game.mouse
-local keyboard = game.keyboard
+local mouse = game.input.mouse
+local keyboard = game.input.keyboard
+local graphics_handler = game.graphics.handler
 
 local main_scene = scene:new("Main")
 
 local function init_debug_menu()
-    local coords = game.ui.text_label:new(
+    local coords = game.graphics.ui.text_label:new(
         main_scene, game.asset_handler:get_font("pixeloid_sans", 20),
         nil, nil, nil, nil, 1000,
         0,0,
@@ -32,7 +33,7 @@ local function init_debug_menu()
     )
     coords:set_parent(main_scene)
 
-    local mouse_coords = game.ui.text_label:new(
+    local mouse_coords = game.graphics.ui.text_label:new(
         main_scene, game.asset_handler:get_font("pixeloid_sans", 14),
         nil, nil, nil, nil, 1001,
         0,0,
@@ -84,28 +85,28 @@ return function()
     
     game.log("Game started.")
 
-    game.graphics_handler:switch_scene(main_scene)
+    graphics_handler:switch_scene(main_scene)
 
     local music = game.asset_handler.audios.music.frozen_sky
     --music:play()
 
-    game.world_handler:load_map("test", main_scene)
+    local map = game.world.handler:load_map("test", main_scene)
 
     init_debug_menu()
 
     mouse.on_left_down:sub(function ()
-        local wx, wy = game.mouse:get_world_pos()
+        local wx, wy = game.input.mouse:get_world_pos()
         local comp = game.world.map_component:new(
-            main_scene, 500,
+            map, 500,
             wx, wy, 50, 50
         )
     end)
 
     mouse.on_right_down:sub(function()
-        if game.graphics_handler.currentScene then
-            game.graphics_handler:switch_scene() 
+        if graphics_handler.currentScene then
+            graphics_handler:switch_scene() 
         else
-             game.graphics_handler:switch_scene(main_scene)
+             graphics_handler:switch_scene(main_scene)
         end
     end)
 end

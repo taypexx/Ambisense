@@ -1,4 +1,6 @@
 local utils = game.utils
+local event = game.event
+local tween = game.tween
 
 local MODES = {"static","follow"}
 
@@ -8,6 +10,7 @@ local MODES = {"static","follow"}
 ---@field scale number Zoom of the camera where 1 - normal state (100% zoom).
 ---@field mode string Camera mode. "static" - stays at the same coordiates. "follow" - follows the world component. Works as static if the target is nil.
 ---@field target map_component|nil Target component to follow. Will not affect the camera if the mode is set to "static".
+---@field on_zoom event Fires when camera starts zooming in/out. Arguments: zoom:number - New zoom of the camera.
 local camera = {
     x = 0,
     y = 0,
@@ -15,8 +18,10 @@ local camera = {
     zooming = false,
     mode = "static",
     target = nil,
+    on_zoom = event:new()
 }
 camera.__index = camera
+camera.__newindex = utils.get_readonly_func({"on_zoom"})
 
 --- Converts world coordinates to screen position.
 ---@param wx number World X coordinate.
@@ -51,15 +56,22 @@ end
 
 --- Zooms the camera
 ---@param zoom number Zoom of the camera where 1 - normal state (100% zoom).
-function camera:zoom(zoom)
+---@param easing string|nil Easting to apply for zooming.
+function camera:zoom(zoom, easing)
     if self.zooming then return end
     if not zoom then game.error("Cannot zoom camera: zoom was not provided.") return end
 
-    self.zooming = true
     local new_scale = utils.clamp(zoom, 0.1, 100)
-    game.tween:start(self, "scale", new_scale, 0.2, "sine", function ()
-        self.zooming = false
-    end)
+    self.on_zoom:fire(new_scale)
+
+    if easing then
+        self.zooming = true
+        tween:start(self, "scale", new_scale, 0.1, easing, function ()
+            self.zooming = false
+        end)
+    else
+        self.scale = new_scale
+    end
 end
 
 --- Updates the camera.

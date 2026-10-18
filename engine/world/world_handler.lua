@@ -21,6 +21,7 @@ end
 --- Loads the map and unloads the previous one.
 ---@param map_name string Name of the map to load.
 ---@param scene scene Scene to load the map on.
+---@return map|nil map The loaded map.
 function world_handler:load_map(map_name, scene)
     if not map_name then game.error("Cannot load the map: map_name was not provided.") return end
     if not scene then game.error("Cannot load the map: scene was not provided.") return end
@@ -39,6 +40,8 @@ function world_handler:load_map(map_name, scene)
 
     self.current_map = map
     map:load(scene)
+
+    return map
 end
 
 --- Unloads the current map.
@@ -50,6 +53,14 @@ end
 --- Initializes the world.
 function world_handler:init()
     self.world = love.physics.newWorld(0,0)
+
+    -- Fix the map rendering when zooming out
+    camera.on_zoom:sub(function (zoom)
+        if not self.current_map then return end
+
+        local sw,sh = love.graphics.getDimensions()
+        self.current_map.sti:resize(sw / zoom, sh / zoom)
+    end)
 end
 
 return world_handler

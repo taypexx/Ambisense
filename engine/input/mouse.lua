@@ -1,5 +1,7 @@
-local event = game.types.event
+local event = game.event
+local utils = game.utils
 local asset_handler = game.asset_handler
+local camera = game.world.camera
 
 ---@class mouse
 ---@field cursors table<string,cursor> All cached cursors. Key is the cursor name.
@@ -29,13 +31,13 @@ local mouse = {
     on_wheel_move = event:new()
 }
 mouse.__index = mouse
-mouse.__newindex = game.utils.get_readonly_func({"on_left_down", "on_left_up", "on_right_down", "on_right_up", "on_wheel_move"})
+mouse.__newindex = utils.get_readonly_func({"on_left_down", "on_left_up", "on_right_down", "on_right_up", "on_wheel_move"})
 
 --- Gets the current world coordinates at the mouse position.
 ---@return number wx
 ---@return number wy
 function mouse:get_world_pos()
-    return game.world.camera:get_world_pos(self:get_pos())
+    return camera:get_world_pos(self:get_pos())
 end
 
 --- Gets the current screen positon of the mouse in pixels.
