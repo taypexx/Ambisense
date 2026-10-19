@@ -9,7 +9,7 @@ return {
   height = 24,
   tilewidth = 32,
   tileheight = 32,
-  nextlayerid = 5,
+  nextlayerid = 6,
   nextobjectid = 1,
   properties = {},
   tilesets = {
@@ -54,8 +54,8 @@ return {
       opacity = 1,
       offsetx = 0,
       offsety = 0,
-      parallaxx = 1.15,
-      parallaxy = 1.15,
+      parallaxx = 1.5,
+      parallaxy = 1.5,
       repeatx = true,
       repeaty = true,
       properties = {}

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="32" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="1">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="32" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="1">
  <editorsettings>
   <export target="test.lua" format="lua"/>
  </editorsettings>
  <tileset firstgid="1" name="test" tilewidth="32" tileheight="32" tilecount="256" columns="16">
   <image source="../../tilemaps/test/test_tileset.png" width="512" height="512"/>
  </tileset>
- <imagelayer id="4" name="bg1" parallaxx="1.15" parallaxy="1.15" repeatx="1" repeaty="1">
+ <imagelayer id="4" name="bg1" parallaxx="1.5" parallaxy="1.5" repeatx="1" repeaty="1">
   <image source="../../tilemaps/test/bg1.png" width="512" height="512"/>
  </imagelayer>
  <layer id="1" name="Tile Layer 1" width="32" height="24">

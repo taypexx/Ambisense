@@ -15,7 +15,11 @@ echo Building the windows version...
 if not exist windows ( md windows )
 copy /b "%love%/love.exe"+"Ambisense.love" "windows/Ambisense.exe"
 copy "%love%\*.dll" "windows"
-copy "%cur%\lib\*.dll" "windows"
+md "windows\lib"
+copy "%cur%\lib\*.dll" "windows\lib\"
+md "windows\licenses"
+copy "%cur%\licenses\*" "windows\licenses\"
+copy "%cur%\THIRD_PARTY_NOTICES.md" "windows"
 
 echo Building the android version...
 if not exist android ( md android )

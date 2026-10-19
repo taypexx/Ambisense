@@ -62,6 +62,7 @@ function map_component:get_size()
     return self.width * scale, self.height * scale
 end
 
+--- Creates a new map component.
 ---@param map map Map to add this component to.
 ---@param layer integer|nil Initial layer to draw the component on. Should be in range 100~999. Default is 100.
 ---@param x number|nil X coordinate in the world space. Default is 0.
