@@ -13,7 +13,7 @@ local sprite = {
     height = nil
 }
 sprite.__index = sprite
-sprite.__newindex = utils.get_readonly_func({"image", "width", "height"})
+sprite.__newindex = utils.readonly_func({"image", "width", "height"})
 
 -- Inherits
 setmetatable(sprite, object)

@@ -21,7 +21,7 @@ local camera = {
     on_zoom = event:new()
 }
 camera.__index = camera
-camera.__newindex = utils.get_readonly_func({"on_zoom"})
+camera.__newindex = utils.readonly_func({"on_zoom"})
 
 --- Converts world coordinates to screen position.
 ---@param wx number World X coordinate.

@@ -14,7 +14,7 @@ local audio_group = {
     audios = nil
 }
 audio_group.__index = audio_group
-audio_group.__newindex = utils.get_readonly_func({"name"})
+audio_group.__newindex = utils.readonly_func({"name"})
 
 -- Inherits
 setmetatable(audio_group, object)

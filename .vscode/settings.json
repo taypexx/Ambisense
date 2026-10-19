@@ -15,6 +15,7 @@
         "assign-type-mismatch"
     ],
     "Lua.workspace.ignoreDir": [
-        "**/sti/**"
+        "**/sti/**",
+        "engine/substrate/tinytoml.lua"
     ]
 }

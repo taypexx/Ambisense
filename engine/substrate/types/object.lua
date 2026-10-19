@@ -7,7 +7,7 @@ local object = {
     object_id = nil
 }
 object.__index = object
-object.__newindex = utils.get_readonly_func({"object_id"})
+object.__newindex = utils.readonly_func({"object_id"})
 
 --- Creates a new object and registers itself in the object_handler.
 ---@return object

@@ -37,7 +37,7 @@ local ui_element = {
     on_mouse_up = nil
 }
 ui_element.__index = ui_element
-ui_element.__newindex = utils.get_readonly_func({"on_mouse_enter", "on_mouse_leave", "on_mouse_down", "on_mouse_up"})
+ui_element.__newindex = utils.readonly_func({"on_mouse_enter", "on_mouse_leave", "on_mouse_down", "on_mouse_up"})
 
 -- Inherits
 setmetatable(ui_element, scene_component)

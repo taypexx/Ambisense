@@ -15,7 +15,7 @@ local tween = {
     }
 }
 tween.__index = tween
-tween.__newindex = utils.get_readonly_func({"tasks", "funcs"})
+tween.__newindex = utils.readonly_func({"tasks", "funcs"})
 
 --- Tweens the number value in the table.
 ---@param t table Table containing a number value.

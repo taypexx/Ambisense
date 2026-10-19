@@ -19,7 +19,7 @@ local scene = {
     on_unload = event:new()
 }
 scene.__index = scene
-scene.__newindex = utils.get_readonly_func({"scene_id", "name"})
+scene.__newindex = utils.readonly_func({"scene_id", "name"})
 
 -- Inherits
 setmetatable(scene, object)

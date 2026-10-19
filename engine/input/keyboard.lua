@@ -9,7 +9,7 @@ local keyboard = {
     on_key_up = event:new()
 }
 keyboard.__index = keyboard
-keyboard.__newindex = utils.get_readonly_func({"on_key_down", "on_key_up"})
+keyboard.__newindex = utils.readonly_func({"on_key_down", "on_key_up"})
 
 --- Checks whether the key is pressed right now.
 ---@param key string Key that is being checked. All key strings: https://www.love2d.org/wiki/Scancode.

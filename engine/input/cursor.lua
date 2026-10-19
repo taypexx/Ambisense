@@ -13,7 +13,7 @@ local cursor = {
     y_hot = nil
 }
 cursor.__index = cursor
-cursor.__newindex = utils.get_readonly_func({"name", "sprite"})
+cursor.__newindex = utils.readonly_func({"name", "sprite"})
 
 -- Inherits
 setmetatable(cursor, object)

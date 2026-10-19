@@ -9,7 +9,7 @@ local font = {
     fonts = nil
 }
 font.__index = font
-font.__newindex = utils.get_readonly_func({"name", "font"})
+font.__newindex = utils.readonly_func({"name", "font"})
 
 -- Inherits
 setmetatable(font, object)

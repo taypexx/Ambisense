@@ -7,7 +7,7 @@ local world_handler = {
     world = nil,
 }
 world_handler.__index = world_handler
-world_handler.__newindex = game.utils.get_readonly_func({"world"})
+world_handler.__newindex = game.utils.readonly_func({"world"})
 
 --- Updates the current map (if there is any at the moment).
 ---@param dt number Time since last update in seconds.

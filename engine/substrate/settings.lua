@@ -42,7 +42,7 @@ local settings = {
     }
 }
 settings.__index = settings
-settings.__newindex = utils.get_readonly_func({"DEFAULT_SETTINGS"})
+settings.__newindex = utils.readonly_func({"default"})
 
 --- Copies all key-value pairs of the table to the settings. Also removes unused settings on different os'es.
 ---@param t table Table to copy key-value pairs from.
@@ -75,14 +75,22 @@ function settings:apply(t)
                                     value = utils.clamp(value, 0, 100)
                                 elseif cat == "video" then
                                     -- Window type
-                                    if setting_name == "window_type" and not utils.table_find(WINDOW_TYPES, value) then
-                                        local lower_window_type = string.lower(value)
-                                        if utils.table_find(WINDOW_TYPES, lower_window_type) then
-                                            value = lower_window_type
-                                        else
-                                            local default_window_type = WINDOW_TYPES[1]
-                                            game.log(string.format("Unknown window_type \"%s\". Setting to \"%s\"...", value, default_window_type), 1, TAG)
-                                            value = default_window_type
+                                    if setting_name == "window_type" then
+                                        local mobile_window_type = WINDOW_TYPES[3]
+                                        -- If current OS is mobile and the window type is not supported on mobile 
+                                        if game.current_os == "Android" or game.current_os == "iOS" and value ~= mobile_window_type then
+                                            game.log(string.format("\"%s\" window type not supported on %s. Setting to \"%s\"...", value, game.current_os, mobile_window_type), 1, TAG)
+                                            value = mobile_window_type
+                                        -- If window type is not recognized
+                                        elseif not utils.table_find(WINDOW_TYPES, value) then
+                                            local lower_window_type = string.lower(value)
+                                            if utils.table_find(WINDOW_TYPES, lower_window_type) then
+                                                value = lower_window_type
+                                            else
+                                                local default_window_type = WINDOW_TYPES[1]
+                                                game.log(string.format("Unknown window_type \"%s\". Setting to \"%s\"...", value, default_window_type), 1, TAG)
+                                                value = default_window_type
+                                            end
                                         end
                                     -- V-sync
                                     elseif setting_name == "vsync" and game.current_os == "iOS" then

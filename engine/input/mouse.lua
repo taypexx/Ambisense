@@ -31,7 +31,7 @@ local mouse = {
     on_wheel_move = event:new()
 }
 mouse.__index = mouse
-mouse.__newindex = utils.get_readonly_func({"on_left_down", "on_left_up", "on_right_down", "on_right_up", "on_wheel_move"})
+mouse.__newindex = utils.readonly_func({"on_left_down", "on_left_up", "on_right_down", "on_right_up", "on_wheel_move"})
 
 --- Gets the current world coordinates at the mouse position.
 ---@return number wx

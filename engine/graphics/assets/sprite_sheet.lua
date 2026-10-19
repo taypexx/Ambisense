@@ -19,7 +19,7 @@ local sprite_sheet = {
     quad_height = nil
 }
 sprite_sheet.__index = sprite_sheet
-sprite_sheet.__newindex = utils.get_readonly_func({"image", "width", "height", "quads", "quad_width", "quad_height"})
+sprite_sheet.__newindex = utils.readonly_func({"image", "width", "height", "quads", "quad_width", "quad_height"})
 
 -- Inherits
 setmetatable(sprite_sheet, object)

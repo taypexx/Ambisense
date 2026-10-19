@@ -9,7 +9,7 @@ local scene_component = {
     layer = nil,
 }
 scene_component.__index = scene_component
-scene_component.__newindex = utils.get_readonly_func({"scene"})
+scene_component.__newindex = utils.readonly_func({"scene"})
 
 -- Inherits
 setmetatable(scene_component, object)

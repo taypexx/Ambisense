@@ -5,7 +5,7 @@ utils.__index = utils
 --- Returns a new function that can be used as __newindex for a class so that the field is read-only.
 ---@param fields table A table containing field names (strings) that are going to be read-only.
 ---@return function|nil
-function utils.get_readonly_func(fields)
+function utils.readonly_func(fields)
     if not fields then game.error("Cannot create a read-only function: fields is not a table.") return end
     if #fields == 0 then game.error("Cannot create a read-only function: fields table is empty.") return end
 
