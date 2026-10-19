@@ -4,6 +4,8 @@ It is also global so that you can access it from anywhere in the code.
 ]]
 
 game = {
+    const = require("src.const"),
+    current_os = love.system.getOS(), -- https://www.love2d.org/wiki/love.system.getOS
     audio = {},
     graphics = {
         assets = {},
@@ -57,6 +59,7 @@ game.asset_handler = require("engine.substrate.asset_handler")
 game.error_handler = require("engine.substrate.error_handler")
 game.error = game.error_handler.error
 game.log = require("engine.substrate.log")
+game.settings = require("engine.substrate.settings")
 game.object_handler = require("engine.substrate.object_handler")
 
 -- Types
@@ -109,6 +112,8 @@ function game:load()
     self.graphics.handler:init()
     self.world.handler:init()
 
+    self.settings:load()
+
     self.log("Engine was successfully initialized.")
 end
 
@@ -123,6 +128,8 @@ end
 
 function game:quit()
     self.on_quit:fire()
+
+    self.settings:save()
 
     self.appdata:close_file_handles()
 end

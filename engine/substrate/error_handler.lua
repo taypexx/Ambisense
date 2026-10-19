@@ -4,10 +4,11 @@ error_handler.__index = error_handler
 
 --- Registers and logs an error.
 ---@param msg string|nil A message to log.
-function error_handler.error(msg)
+---@param tag string|nil Title of the log message. Preferably in caps.
+function error_handler.error(msg, tag)
     if not msg then msg = "An unknown error has occurred." end
     
-    game.log(msg, 2)
+    game.log(msg, 2, tag)
 end
 
 function error_handler.low_memory()
