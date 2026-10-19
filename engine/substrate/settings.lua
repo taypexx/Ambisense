@@ -57,7 +57,7 @@ function settings:apply(t)
         local default_values = self.default[cat]
 
         -- Check for unknown category
-        if default_values then
+        if default_values ~= nil then
             local values_type = type(values)
             -- Check for the correct value type
             if values_type == type(default_values) then
@@ -143,19 +143,19 @@ function settings:apply(t)
     end
 
     -- Adding skipped/missing categories/settings
-    for cat,values in pairs(self.default) do
-        if self.current[cat] then
-            if type(values) == "table" then
-                for setting_name,value in pairs(values) do
+    for cat,default_values in pairs(self.default) do
+        if self.current[cat] ~= nil then
+            if type(default_values) == "table" then
+                for setting_name,default_value in pairs(default_values) do
                     if self.current[cat][setting_name] == nil then
                         game.log(string.format("Setting \"%s\" in the \"%s\" category is missing. Setting to the default value...", setting_name, cat), 1, TAG)
-                        self.current[cat][setting_name] = value
+                        self.current[cat][setting_name] = default_value
                     end
                 end
             end
         else
-            game.log(string.format("Category \"%s\" is missing. Loading default values for this category..."), 1, TAG)
-            self[cat] = values
+            game.log(string.format("Category \"%s\" is missing. Loading default values for this category...", cat), 1, TAG)
+            self.current[cat] = default_values
         end
     end
 
@@ -184,6 +184,8 @@ function settings:load()
         game.log("Couldn't load the settings: settings file not found. Loading default...", 1, TAG)
         return self:load_default()
     end
+
+    game.log(toml_string, 0, TAG)
 
     -- Parse check
     local parse_ok,result = pcall(toml.parse, toml_string, {load_from_string=true})

@@ -18,7 +18,7 @@ game = {
 -- Proper indexing for the game table
 setmetatable(game, {
     __index = function (t,lib)
-        for _,v in pairs({"", ".types", ".tweening", ".crypto"}) do
+        for _,v in pairs({"", ".types", ".tweening"}) do
             local s,m = pcall(require, string.format("engine.substrate%s.%s", v, lib))
             if s then
                 return m
@@ -59,7 +59,7 @@ game.asset_handler = require("engine.substrate.asset_handler")
 game.error_handler = require("engine.substrate.error_handler")
 game.error = game.error_handler.error
 game.log = require("engine.substrate.log")
-game.crypto = require("engine.substrate.crypto.crypto")
+game.crypto = require("engine.substrate.crypto")
 game.save = require("engine.substrate.save")
 game.settings = require("engine.substrate.settings")
 game.object_handler = require("engine.substrate.object_handler")

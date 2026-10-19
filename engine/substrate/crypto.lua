@@ -1,5 +1,5 @@
 local ffi = require("ffi")
-local sodium = ffi.load("engine/substrate/crypto/libsodium.dll")
+local sodium = ffi.load("lib/libsodium")
 
 ffi.cdef[[
     int sodium_init(void);
@@ -40,7 +40,7 @@ local FORMAT = "SV01"
 
 ---@class crypto
 local crypto = {
-    key = "cb01a1976dac35db3c81c83bcfc479fd455b28d6eff67d62dec577ddbc640c56 "
+    key = "cb01a1976dac35db3c81c83bcfc479fd"
 }
 crypto.__index = crypto
 

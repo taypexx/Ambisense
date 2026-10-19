@@ -14,7 +14,8 @@ ren "Ambisense.zip" "Ambisense.love"
 echo Building the windows version...
 if not exist windows ( md windows )
 copy /b "%love%/love.exe"+"Ambisense.love" "windows/Ambisense.exe"
-copy "%love%/*.dll" "windows"
+copy "%love%\*.dll" "windows"
+copy "%cur%\lib\*.dll" "windows"
 
 echo Building the android version...
 if not exist android ( md android )
