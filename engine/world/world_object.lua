@@ -16,7 +16,7 @@ local world_object = {
     on_collision_end = event:new(),
 }
 world_object.__index = world_object
-world_object.__newindex = utils.readonly_func({"anchored", "on_collision_start", "on_collision_end"})
+world_object.__newindex = utils.readonly_func({"body", "anchored", "on_collision_start", "on_collision_end"})
 
 -- Inherits
 setmetatable(world_object, map_component)

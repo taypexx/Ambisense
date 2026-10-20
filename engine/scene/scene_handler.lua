@@ -76,12 +76,12 @@ end
 ---@param scene scene|nil
 function scene_handler:switch_scene(scene)
     local old_scene = self.currentScene
+    self.currentScene = scene
+    
     if old_scene then
         old_scene.active = false
         old_scene.on_unload:fire()
     end
-
-    self.currentScene = scene
     
     if scene then
         scene.active = true

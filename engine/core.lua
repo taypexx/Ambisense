@@ -9,7 +9,8 @@ game = {
     audio = {},
     scene = {
         assets = {},
-        ui = {}
+        ui = {},
+        ui_modifiers = {}
     },
     input = {},
     world = {}
@@ -89,6 +90,8 @@ game.scene.assets.sprite_sheet = require("engine.scene.assets.sprite_sheet")
     
 game.scene.ui.element = require("engine.scene.ui.ui_element")
 game.scene.ui.text_label = require("engine.scene.ui.text_label")
+game.scene.ui_modifiers.ui_modifiers = require("engine.scene.ui_modifiers.ui_modifier")
+game.scene.ui_modifiers.ui_border = require("engine.scene.ui_modifiers.ui_border")
 
 -- Input
 game.input.cursor = require("engine.input.cursor")

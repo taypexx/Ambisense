@@ -53,8 +53,8 @@ end
 function map:add_component(component)
     local layer_table = self.components[component.layer]
     if layer_table then
-        if utils.table_find(layer_table, component) then 
-            game.error(string.format("Cannot add map component to the %s: Component is already present on the map.", self.name))
+        if utils.table_find(layer_table, component) then
+            game.error(string.format("Cannot add map component to the \"%s\": Component is already present on the map.", self.name))
             return
         end
         table.insert(layer_table, component)
@@ -69,8 +69,8 @@ end
 function map:remove_component(component)
     local layer_table = self.components[component.layer]
     local i = utils.table_find(layer_table, component)
-    if not (layer_table and i) then 
-        game.error(string.format("Cannot remove map component from the %s: Component is not present on the map.", self.name))
+    if not layer_table or not i then
+        game.error(string.format("Cannot remove map component from the \"%s\": Component is not present on the map.", self.name))
         return
     end
     table.remove(layer_table, i)
@@ -101,7 +101,7 @@ function map:load(scene)
                 game.log(string.format("Couldn't create a background for map \"%s\".", self.name), 1)
             end
         -- Collision layer
-        elseif layer.name == "Collision" then
+        elseif string.lower(layer.name) == "collision" then
             layer.visible = false
             layer.properties.collidable = true
         end
@@ -116,8 +116,8 @@ end
 --- Stops all processes happening on the map and unloads itself.
 function map:unload()
     for _,components in pairs(self.components) do
-        for _,component in pairs(components) do
-            component:destroy()
+        for i = 1, #components do
+            components[1]:destroy()
         end
     end
     self.components = {}

@@ -34,7 +34,7 @@ function object_handler:destroy(object)
         object[k] = nil
     end
 
-    game.log(string.format("Object %i was destroyed. Is nil: %s", id, tostring(object==nil)))
+    game.log(string.format("Object %i was destroyed.", id))
 end
 
 return object_handler

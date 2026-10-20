@@ -30,6 +30,7 @@ local ui_element = {
 
     parent = nil,
     children = nil,
+    modifiers = nil,
 
     on_mouse_enter = nil,
     on_mouse_leave = nil,
@@ -44,7 +45,7 @@ setmetatable(ui_element, scene_component)
 
 --- Base method that needs to be replaced by inheriting classes.
 function ui_element:draw()
-    if not self.active then return end
+    if not self:is_drawing() then return end
 
     local x,y = self:get_position()
     local width,height = self:get_size()
@@ -52,6 +53,34 @@ function ui_element:draw()
     utils.set_color(self.color, self.opacity)
     love.graphics.rectangle("fill", x, y, width, height)
     utils.reset_color()
+
+    for _,modifier in pairs(self.modifiers) do
+        modifier:draw()
+    end
+end
+
+--- Tells whether the element is being drawn.
+---@return boolean is_drawing True if the element is being drawn, otherwise false.
+function ui_element:is_drawing()
+    if self.parent and self.parent.parent then
+        return self.active and self.parent:is_drawing()
+    end
+    return self.active
+end
+
+--- Attaches the modifier to the UI element.
+---@param modifier ui_modifier UI modifier to attach.
+function ui_element:attach_modifier(modifier)
+    if utils.table_find(self.modifiers, modifier) then game.error("Cannot attach a UI modifier to the UI element: Modifier is already attached.") return end
+    table.insert(self.modifiers, modifier)
+end
+
+--- Detaches the modifier to the UI element.
+---@param modifier ui_modifier UI modifier to detach.
+function ui_element:detach_modifier(modifier)
+    local i = utils.table_find(self.modifiers, modifier)
+    if not i then game.error("Cannot detach a UI modifier to the UI element: Modifier is not attached.") return end
+    table.remove(self.modifiers, i)
 end
 
 --- Sets the pixel position of the element. To change position relative to the parent change ui_element.x and ui_element.y.
@@ -154,12 +183,14 @@ end
 --- Creates a new UI element.
 ---@param parent ui_element|scene Initial parent of the UI element.
 ---@param layer integer|nil Initial layer to draw the component on. Should be in range 1000~9999. Default is 1000.
----@param x number|nil X position on the screen from 0 to 1. Default is 0.
----@param y number|nil Y position on the screen where 0 to 1. Default is 0.
+---@param x number|nil X position inside the parent from 0 to 1. Default is 0.
+---@param y number|nil Y position inside the parent 0 to 1. Default is 0.
 ---@param width number|nil Width from 0 to 1. Default is 0.5.
 ---@param height number|nil Height from 0 to 1. Default is 0.5.
+---@param color table<number> Сolor of the element. Table of type {r,g,b} where r,g and b are numbers from 0 to 1. Default is {1,1,1}.
+---@param opacity number Opacity where 0 - invisible, 1 - fully visible. Default is 1.
 ---@return ui_element|nil
-function ui_element:new(parent, layer, x, y, width, height)
+function ui_element:new(parent, layer, x, y, width, height, color, opacity)
     if not parent then game.error("Cannot create a new UI element: parent was not provided.") return end
 
     local scene = parent.scene or parent
@@ -174,8 +205,8 @@ function ui_element:new(parent, layer, x, y, width, height)
     new.height = (height and utils.clamp(height, 0, 1)) or 0.5
 
     new.active = true
-    new.color = {1,1,1}
-    new.opacity = 1
+    new.color = color or {1,1,1}
+    new.opacity = opacity or 1
 
     new.on_mouse_enter = event:new()
     new.on_mouse_leave = event:new()
@@ -184,6 +215,7 @@ function ui_element:new(parent, layer, x, y, width, height)
 
     new:set_parent(parent)
     new.children = {}
+    new.modifiers = {}
 
     return new
 end

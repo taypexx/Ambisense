@@ -1,7 +1,6 @@
 local const = game.const
 local utils = game.utils
 local camera = game.world.camera
-local scene_handler = game.scene.handler
 
 ---@class world_handler
 ---@field current_map map Current loaded map.
