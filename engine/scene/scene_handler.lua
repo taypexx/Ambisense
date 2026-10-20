@@ -1,24 +1,32 @@
 local utils = game.utils
+local event = game.event
 local mouse = game.input.mouse
 
----@class graphics_handler
+---@class scene_handler
 ---@field last_id integer The ID of the last created scene.
----@field scenes table<integer,scene> A dictionary of scenes where ID is the key.
----@field scenesByName table<string,scene> A dictionary of scenes where name is the key.
+---@field scenes table<integer,scene> A dictionary of scenes where ID is the key. Scenes can also be indexed by their name.
 ---@field currentScene scene|nil Current scene that is being rendered on screen.
-local graphics_handler = {
+---@field on_scene_switched event Fires when the current scene switches. Arguments: new_scene, old_scene - self explanatory.
+local scene_handler = {
     last_id = 0,
-    scenes = {},
-    scenesByName = {},
-    currentScene = nil
+    currentScene = nil,
+    scenes = setmetatable({}, {__index = function(t,k)
+        for id,scene in pairs(t) do
+            if scene and (k == id or k == scene.name) then
+                return scene
+            end
+        end
+    end}),
+
+    on_scene_switched = event:new()
 }
-graphics_handler.__index = graphics_handler
+scene_handler.__index = scene_handler
 
 --- Gets the top most component at the given position or nil if there are none.
 ---@param x integer X coordinate to look for the component.
 ---@param y integer Y coordinate to look for the component.
 ---@return scene_component|nil
-function graphics_handler:get_top_component(x,y)
+function scene_handler:get_top_component(x,y)
     if not self.currentScene then return end
 
     return utils.iterate(self.currentScene.components, true, function (layer, components)
@@ -31,7 +39,7 @@ function graphics_handler:get_top_component(x,y)
 end
 
 --- Fires element enter/leave events based on the current mouse position.
-function graphics_handler:process_mouse_position(x,y,dx,dy)
+function scene_handler:process_mouse_position(x,y,dx,dy)
     local elem = self:get_top_component(x,y)
     local prev_elem = self:get_top_component(x-dx,y-dy)
     if elem == prev_elem then return end
@@ -50,14 +58,14 @@ function graphics_handler:process_mouse_position(x,y,dx,dy)
 end
 
 --- Fires on_mouse_down event on elements based on their position.
-function graphics_handler:process_mouse_down(x,y)
+function scene_handler:process_mouse_down(x,y)
     local elem = self:get_top_component(x,y)
     if not (elem and elem.on_mouse_down) then return end
     elem.on_mouse_down:fire(x,y)
 end
 
 --- Fires on_mouse_up event on elements based on their position.
-function graphics_handler:process_mouse_up(x,y)
+function scene_handler:process_mouse_up(x,y)
     local elem = self:get_top_component(x,y)
     if not (elem and elem.on_mouse_up) then return end
     elem.on_mouse_up:fire(x,y)
@@ -66,10 +74,11 @@ end
 --- Switches the current scene to the given one and changes their active values.
 --- After switching the game will start rendering it.
 ---@param scene scene|nil
-function graphics_handler:switch_scene(scene)
-    if self.currentScene then
-        self.currentScene.active = false
-        self.currentScene.on_unload:fire()
+function scene_handler:switch_scene(scene)
+    local old_scene = self.currentScene
+    if old_scene then
+        old_scene.active = false
+        old_scene.on_unload:fire()
     end
 
     self.currentScene = scene
@@ -78,12 +87,14 @@ function graphics_handler:switch_scene(scene)
         scene.active = true
         scene.on_load:fire()
     end
+
+    self.on_scene_switched:fire(scene, old_scene)
 end
 
 --- Registers a new scene.
 --- For internal use only.
 ---@param scene scene Scene to register.
-function graphics_handler:register_scene(scene)
+function scene_handler:register_scene(scene)
     if not scene then game.error("Cannot register a new scene: Scene was not provided.") return end
     if scene.scene_id ~= nil then game.error("Cannot register a new scene: scene_id is already assigned.") return end
 
@@ -91,13 +102,12 @@ function graphics_handler:register_scene(scene)
     scene.scene_id = self.last_id
 
     self.scenes[scene.scene_id] = scene
-    self.scenesByName[scene.name] = scene
 
     game.log("Registered a new scene, scene_id: "..scene.scene_id)
 end
 
 --- Draws the current scene.
-function graphics_handler:draw()
+function scene_handler:draw()
     -- Draw the scene components
     if self.currentScene then
         utils.iterate(self.currentScene.components, false, function (layer, components)
@@ -117,7 +127,7 @@ function graphics_handler:draw()
 end
 
 -- Initializes graphics.
-function graphics_handler:init()
+function scene_handler:init()
     -- Mouse and cursor setup
     love.mouse.setVisible(false)
 
@@ -129,4 +139,4 @@ function graphics_handler:init()
     mouse.on_left_up:sub(self.process_mouse_up, self)
 end
 
-return graphics_handler
+return scene_handler

@@ -1,4 +1,4 @@
-local ui_element = game.graphics.ui.ui_element
+local ui_element = game.scene.ui.ui_element
 local utils = game.utils
 
 ---@class text_label:ui_element

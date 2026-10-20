@@ -7,7 +7,7 @@ game = {
     const = require("src.const"),
     current_os = love.system.getOS(), -- https://www.love2d.org/wiki/love.system.getOS
     audio = {},
-    graphics = {
+    scene = {
         assets = {},
         ui = {}
     },
@@ -78,17 +78,17 @@ game.audio.audio = require("engine.audio.audio")
 game.audio.group = require("engine.audio.audio_group")
 game.audio.handler = require("engine.audio.audio_handler")
 
--- Graphics
-game.graphics.scene = require("engine.graphics.scene")
-game.graphics.scene_component = require("engine.graphics.scene_component")
-game.graphics.handler = require("engine.graphics.graphics_handler")
+-- Scenes
+game.scene.scene = require("engine.scene.scene")
+game.scene.scene_component = require("engine.scene.scene_component")
+game.scene.handler = require("engine.scene.scene_handler")
 
-game.graphics.assets.font = require("engine.graphics.assets.font")
-game.graphics.assets.sprite = require("engine.graphics.assets.sprite")
-game.graphics.assets.sprite_sheet = require("engine.graphics.assets.sprite_sheet")
+game.scene.assets.font = require("engine.scene.assets.font")
+game.scene.assets.sprite = require("engine.scene.assets.sprite")
+game.scene.assets.sprite_sheet = require("engine.scene.assets.sprite_sheet")
     
-game.graphics.ui.element = require("engine.graphics.ui.ui_element")
-game.graphics.ui.text_label = require("engine.graphics.ui.text_label")
+game.scene.ui.element = require("engine.scene.ui.ui_element")
+game.scene.ui.text_label = require("engine.scene.ui.text_label")
 
 -- Input
 game.input.cursor = require("engine.input.cursor")
@@ -101,6 +101,7 @@ game.world.background = require("engine.world.background")
 game.world.map = require("engine.world.map")
 game.world.map_component = require("engine.world.map_component")
 game.world.handler = require("engine.world.world_handler")
+game.world.world_object = require("engine.world.world_object")
 
 -- Events
 game.on_update = game.event:new()
@@ -111,7 +112,7 @@ game.on_quit = game.event:new()
 function game:load()
     self.appdata:init()
     self.asset_handler:init()
-    self.graphics.handler:init()
+    self.scene.handler:init()
     self.world.handler:init()
 
     self.settings:load()
@@ -121,6 +122,9 @@ function game:load()
 end
 
 function game:update(dt)
+    -- Clamp delta time if the game froze for a long time
+    dt = math.min(dt, 1 / 30)
+
     self.audio.handler:update()
     self.world.handler:update(dt)
     self.world.camera:update(dt)

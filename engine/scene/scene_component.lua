@@ -52,7 +52,7 @@ end
 function scene_component:new(scene, layer)
     local new = setmetatable(object:new(), self)
     new.scene = scene
-    new.layer = layer or 0
+    new.layer = utils.clamp(layer or 0, 0)
 
     if scene then
         scene:add_component(new)

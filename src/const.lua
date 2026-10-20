@@ -5,6 +5,8 @@ local const = {
     love_version = "11.5",
     icon_path = nil,
 
+    tile_size = 32,
+    gravity_constant = 1000,
 }
 
 -- https://www.love2d.org/wiki/Config_Files

@@ -32,7 +32,7 @@ function asset_handler:init()
         local file_path = "assets/fonts/"..file_name
         local info = love.filesystem.getInfo(file_path)
         if info and not info.isDirectory then
-            local font = game.graphics.assets.font:new(file_name)
+            local font = game.scene.assets.font:new(file_name)
             if font then
                 self.fonts[font.name] = font
             else
@@ -52,7 +52,7 @@ function asset_handler:init()
                 local sub_file_path = file_path.."/"..file_name
                 local sub_info = love.filesystem.getInfo(sub_file_path)
                 if sub_info and sub_info.type == "file" then
-                    local sprite = game.graphics.assets.sprite:new_from_file(sub_file_path)
+                    local sprite = game.scene.assets.sprite:new_from_file(sub_file_path)
                     if sprite then
                         if not self.sprites[folder_name] then
                             self.sprites[folder_name] = {}

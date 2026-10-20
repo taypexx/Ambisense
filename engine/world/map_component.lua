@@ -1,11 +1,12 @@
 local utils = game.utils
-local scene_component = game.graphics.scene_component
+local scene_component = game.scene.scene_component
 local camera = game.world.camera
 
 local MIN_COMP_LAYER = 100
 local MAX_COMP_LAYER = 999
 
 ---@class map_component:scene_component
+---@field map map Map of the component.
 ---@field visible boolean True if thee component is visible, otherwise false.
 ---@field cull boolean Whether the component culls. If true will not render outside of the screen.
 ---@field x number X coordinate of the component in the world space.
@@ -62,6 +63,16 @@ function map_component:get_size()
     return self.width * scale, self.height * scale
 end
 
+--- Assigns the component to the map. Cannot be called if the map was already set.
+---@param map map Map to assign this component to.
+function map_component:assign(map)
+    if not map then game.error("Cannot assign a map component: map was not provided.") return end
+    if self.map then game.error("Cannot assign a map component: map was already assigned.") return end
+
+    self.map = map
+    self.map:add_component(self)
+end
+
 --- Creates a new map component.
 ---@param map map Map to add this component to.
 ---@param layer integer|nil Initial layer to draw the component on. Should be in range 100~999. Default is 100.
@@ -82,11 +93,15 @@ function map_component:new(map, layer, x, y, width, height, cull)
     new.width = width or 16
     new.height = height or 16
 
+    new:assign(map)
     return new
 end
 
 --- Destroys the map component.
 function map_component:destroy()
+    if self.map then
+        self.map:remove_component(self)
+    end
     scene_component.destroy(self)
 end
 

@@ -1,6 +1,7 @@
 local toml = require("engine.substrate.tinytoml")
 local appdata = game.appdata
 local utils = game.utils
+local keyboard = game.input.keyboard
 
 local TAG = "SETTINGS"
 local MAX_SAVE_TRIES = 5
@@ -105,7 +106,7 @@ function settings:apply(t)
                                 elseif cat == "controls" then
                                     -- Check for every control in the table
                                     for scancode_i,scancode in pairs(value) do
-                                        local scancode_exist = pcall(love.keyboard.getKeyFromScancode, scancode)
+                                        local scancode_exist = keyboard:is_valid(scancode)
                                         if not scancode_exist then
                                             game.log(string.format("Unknown control \"%s\" detected for the \"%s\" action. Removing it from controls...", scancode, setting_name), 1, TAG)
                                             table.remove(value, scancode_i)

@@ -1,7 +1,7 @@
 local object = game.object
 local event = game.event
 local utils = game.utils
-local graphics_handler = game.graphics.handler
+local scene_handler = game.scene.handler
 
 ---@class scene:object
 ---@field scene_id integer Unique ID of the scene.
@@ -15,11 +15,12 @@ local scene = {
     name = nil,
     components = nil,
     active = nil,
+    
     on_load = event:new(),
     on_unload = event:new()
 }
 scene.__index = scene
-scene.__newindex = utils.readonly_func({"scene_id", "name"})
+scene.__newindex = utils.readonly_func({"scene_id", "name", "on_load", "on_unload"})
 
 -- Inherits
 setmetatable(scene, object)
@@ -57,7 +58,7 @@ end
 ---@param name string|nil Name of the scene.
 ---@return scene|nil
 function scene:new(name)
-    if graphics_handler.scenesByName[name] then
+    if scene_handler.scenes[name] then
         game.error("Cannot create new scene: Scene with the same name already exists!")
         return
     end
@@ -67,7 +68,7 @@ function scene:new(name)
     new.components = {}
     new.active = false
     
-    graphics_handler:register_scene(new)
+    scene_handler:register_scene(new)
     return new
 end
 

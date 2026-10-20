@@ -1,6 +1,6 @@
 local event = game.event
 local utils = game.utils
-local scene_component = game.graphics.scene_component
+local scene_component = game.scene.scene_component
 
 local MIN_COMP_LAYER = 1000
 local MAX_COMP_LAYER = 9999

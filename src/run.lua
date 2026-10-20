@@ -16,16 +16,18 @@
 
 ]]
 
-local scene = game.graphics.scene
+local scene = game.scene.scene
 local camera = game.world.camera
 local mouse = game.input.mouse
 local keyboard = game.input.keyboard
-local graphics_handler = game.graphics.handler
+local scene_handler = game.scene.handler
+
+local console = require("src.dev_console")
 
 local main_scene = scene:new("Main")
 
 local function init_debug_menu()
-    local coords = game.graphics.ui.text_label:new(
+    local coords = game.scene.ui.text_label:new(
         main_scene, game.asset_handler:get_font("pixeloid_sans", 20),
         nil, nil, nil, nil, 1000,
         0,0,
@@ -33,7 +35,7 @@ local function init_debug_menu()
     )
     coords:set_parent(main_scene)
 
-    local mouse_coords = game.graphics.ui.text_label:new(
+    local mouse_coords = game.scene.ui.text_label:new(
         main_scene, game.asset_handler:get_font("pixeloid_sans", 14),
         nil, nil, nil, nil, 1001,
         0,0,
@@ -79,13 +81,16 @@ local function init_debug_menu()
             camera:zoom(camera.scale - camera_zoom)
         end
     end)
+
+    console:create(main_scene)
+    keyboard:get_key_event("`", true):sub(console.toggle, console)
 end
 
 return function()
     
     game.log("Game started.")
 
-    graphics_handler:switch_scene(main_scene)
+    scene_handler:switch_scene(main_scene)
 
     local music = game.asset_handler.audios.music.frozen_sky
     --music:play()
@@ -96,17 +101,16 @@ return function()
 
     mouse.on_left_down:sub(function ()
         local wx, wy = game.input.mouse:get_world_pos()
-        local comp = game.world.map_component:new(
-            map, 500,
-            wx, wy, 50, 50
+        local obj = game.world.world_object:new(
+            500, wx, wy, 50, 50
         )
     end)
 
     mouse.on_right_down:sub(function()
-        if graphics_handler.currentScene then
-            graphics_handler:switch_scene() 
+        if scene_handler.currentScene then
+            scene_handler:switch_scene() 
         else
-             graphics_handler:switch_scene(main_scene)
+             scene_handler:switch_scene(main_scene)
         end
     end)
 end

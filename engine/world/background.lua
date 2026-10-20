@@ -1,5 +1,5 @@
 local utils = game.utils
-local scene_component = game.graphics.scene_component
+local scene_component = game.scene.scene_component
 local camera = game.world.camera
 
 local MIN_COMP_LAYER = 0
