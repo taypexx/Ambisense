@@ -6,8 +6,7 @@ utils.__index = utils
 ---@param fields table A table containing field names (strings) that are going to be read-only.
 ---@return function|nil
 function utils.readonly_func(fields)
-    if not fields then game.error("Cannot create a read-only function: fields is not a table.") return end
-    if #fields == 0 then game.error("Cannot create a read-only function: fields table is empty.") return end
+    if not fields or #fields == 0 then return end
 
     return function (t, k, v)
         for _,field in pairs(fields) do
@@ -67,13 +66,6 @@ function utils.clamp(x, min, max)
     return x
 end
 
---- Sets the current drawing color.
----@param color table<number> Сolor of the element. Table of type {r,g,b} where r,g and b are numbers from 0 to 1.
----@param opacity number|nil Opacity where 0 - invisible, 1 - fully visible. Default is 1.
-function utils.set_color(color, opacity)
-    love.graphics.setColor(color[1], color[2], color[3], opacity or 1)
-end
-
 --- Applies opacity on the current drawing color.
 --- @param opacity number Number from 0 to 1. 0 - fully invisible, 1 - fully visible.
 function utils.apply_opacity(opacity)
@@ -129,20 +121,18 @@ function utils.get_file_name(file_path)
     return utils.split(file_name, ".")[1] or file_name
 end
 
---- Converts tile coordinates to pixel coordinates.
----@param i integer
----@param j integer
----@return integer,integer
-function utils.tile_to_pixel(i,j)
-    return (i - j)*32, (i + j)*16
+--- Checks whether the string starts with another string.
+---@param str string String to check.
+---@param starts string Start of the string.
+function utils.starts_with(str, starts)
+    return str.sub(str, 1, #starts) == starts
 end
 
---- Converts pixel coordinates to tile coordinates.
----@param x integer
----@param y integer
----@return integer,integer
-function utils.pixel_to_tile(x,y)
-    return (x + 2*y)/64, (2*y - x)/64
+--- Checks whether the string ends with another string.
+---@param str string String to check.
+---@param ends string End of the string.
+function utils.ends_with(str, ends)
+    return str.sub(str, -#ends) == ends
 end
 
 return utils

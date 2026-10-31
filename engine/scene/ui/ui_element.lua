@@ -10,8 +10,7 @@ local MAX_COMP_LAYER = 9999
 ---@field y number Y position inside the parent where 0 - the top most pixel, 1 - the bottom most pixel, 0.5 - center.
 ---@field width number Width where 0 covers 0% of the parent's width, 1 covers 100% of the parent's width.
 ---@field active boolean True if the element is visible and can be interacted, otherwise false.
----@field color table<number> Сolor of the element. Table of type {r,g,b} where r,g and b are numbers from 0 to 1.
----@field opacity number Opacity where 0 - invisible, 1 - fully visible.
+---@field color table<number> Сolor of the element. Table of type {r,g,b,a}.
 ---@field height number Height where 0 covers 0% of the parent's height, 1 covers 100% of the parent's height.
 ---@field parent ui_element|scene|nil Parent UI element. To change use ui_element:set_parent().
 ---@field children table<ui_element> Children UI elements.
@@ -26,7 +25,6 @@ local ui_element = {
 
     active = nil,
     color = nil,
-    opacity = nil,
 
     parent = nil,
     children = nil,
@@ -50,7 +48,7 @@ function ui_element:draw()
     local x,y = self:get_position()
     local width,height = self:get_size()
 
-    utils.set_color(self.color, self.opacity)
+    love.graphics.setColor(self.color)
     love.graphics.rectangle("fill", x, y, width, height)
     utils.reset_color()
 
@@ -187,10 +185,9 @@ end
 ---@param y number|nil Y position inside the parent 0 to 1. Default is 0.
 ---@param width number|nil Width from 0 to 1. Default is 0.5.
 ---@param height number|nil Height from 0 to 1. Default is 0.5.
----@param color table<number> Сolor of the element. Table of type {r,g,b} where r,g and b are numbers from 0 to 1. Default is {1,1,1}.
----@param opacity number Opacity where 0 - invisible, 1 - fully visible. Default is 1.
+---@param color table<number> Сolor of the element. Table of type {r,g,b,a} where r,g,b and a are numbers from 0 to 1. Default is {1,1,1,1}.
 ---@return ui_element|nil
-function ui_element:new(parent, layer, x, y, width, height, color, opacity)
+function ui_element:new(parent, layer, x, y, width, height, color)
     if not parent then game.error("Cannot create a new UI element: parent was not provided.") return end
 
     local scene = parent.scene or parent
@@ -205,8 +202,7 @@ function ui_element:new(parent, layer, x, y, width, height, color, opacity)
     new.height = (height and utils.clamp(height, 0, 1)) or 0.5
 
     new.active = true
-    new.color = color or {1,1,1}
-    new.opacity = opacity or 1
+    new.color = color or {1,1,1,1}
 
     new.on_mouse_enter = event:new()
     new.on_mouse_leave = event:new()

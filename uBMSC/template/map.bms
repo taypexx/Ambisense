@@ -1,0 +1,43 @@
+﻿
+*---------------------- HEADER FIELD
+
+#SPEED 2
+#CHARTER 
+#TITLE 
+#ARTIST 
+#BPM 140
+#LEVEL 
+#RANK 1
+
+
+#LNTYPE 1
+
+#WAV01 music
+#WAV02 basic1
+#WAV03 basic2
+#WAV04 normal1
+#WAV05 normal2
+#WAV06 heavy1
+#WAV07 heavy2
+#WAV08 special
+#WAV09 heal
+#WAV0D boss1
+#WAV0E boss2
+#WAV0F boss3
+#WAV0G boss4
+#WAV0H boss_special
+#WAV0P Vignette Start
+#WAV0Q Vignette Max
+#WAV0R Vignette End
+#WAV0S Speed 1
+#WAV0T Speed 2
+#WAV0U Speed 3
+#WAV0V Speed 4
+
+
+*---------------------- MAIN DATA FIELD
+
+
+#00021:01
+
+

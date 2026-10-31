@@ -136,6 +136,10 @@ function game:update(dt)
     self.on_update:fire(dt)
 end
 
+function game:draw()
+    self.scene.handler:draw()
+end
+
 function game:quit()
     self.on_quit:fire()
 

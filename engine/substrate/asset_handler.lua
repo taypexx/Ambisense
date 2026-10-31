@@ -1,3 +1,5 @@
+local utils = game.utils
+
 ---@class asset_handler
 ---@field fonts table<string, font> Table of fonts. Key is the name of the font, value is the font object.
 ---@field sprites table<string, table<string, sprite|sprite_sheet>> Table of sprites|sprite sheets. Key is the name of the folder, value is the table where key is the sprite|sprite sheet name and value is the sprite|sprite sheet object.
@@ -101,7 +103,7 @@ function asset_handler:init()
             for _,file_name in pairs(love.filesystem.getDirectoryItems(file_path)) do
                 local sub_file_path = file_path.."/"..file_name
                 local sub_info = love.filesystem.getInfo(sub_file_path)
-                if string.sub(file_name, -4) == ".lua" and sub_info and sub_info.type == "file" then
+                if utils.ends_with(file_name, ".lua") and sub_info and sub_info.type == "file" then
                     local map = game.world.map:new(sub_file_path)
                     if map then
                         self.maps[map.name] = map

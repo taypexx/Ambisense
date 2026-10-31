@@ -10,7 +10,7 @@ function love.update(dt)
 end
 
 function love.draw()
-    game.scene.handler:draw()
+    game:draw()
 end
 
 function love.quit()
