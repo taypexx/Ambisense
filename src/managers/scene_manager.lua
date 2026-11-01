@@ -1,3 +1,5 @@
+local scene_handler = game.scene.handler
+
 ---@class scene_manager
 ---@field current scene_controller Current scene controller. Scene may be still loading, check scene_manager.loaded.
 ---@field loaded boolean Whether the current scene has finished loading.
@@ -18,18 +20,22 @@ function scene_manager:switch(scene_name, ...)
     local controller = self.controllers[scene_name]
     if not controller then game.error("Unknown scene "..scene_name) return end
 
-    self.current = controller
-
-    if self.current and self.current.unloading then
+    if self.current and self.current.unload then
         self.current:unload()
     end
+
+    self.current = controller
     
-    if controller.loading then
+    if controller.load then
         self.loaded = false
+
         self.controllers.loading:load(controller)
+        scene_handler:switch_scene(self.controllers.loading.scene)
+        
+        controller:load(...)
         self.loaded = true
     end
-    controller:load(...)
+    scene_handler:switch_scene(controller.scene)
 end
 
 function scene_manager:init()

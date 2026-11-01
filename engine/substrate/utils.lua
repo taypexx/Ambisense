@@ -21,7 +21,7 @@ function utils.readonly_func(fields)
     end
 end
 
---- Finds a key/index of a value in the given table and returns it or nil if not present.
+--- Finds the index of the value in the given table and returns it or nil if not present.
 --- Note that this won't work with dictionaries.
 --- @param t table Table to look into.
 --- @param value any Value to find.
@@ -33,6 +33,45 @@ function utils.table_find(t, value)
     for i = 1, #t do
         if t[i] == value then
             return i
+        end
+    end
+end
+
+--- Creates a copy of a table.
+---@param original table Original table to reference.
+---@return table
+function utils.table_copy(original)
+    local copy = {}
+
+    for key, value in pairs(original) do
+        local copied_key = key
+        local copied_value = value
+
+        if type(key) == "table" then
+            copied_key = utils.table_copy(key)
+        end
+
+        if type(value) == "table" then
+            copied_value = utils.table_copy(value)
+        end
+
+        copy[copied_key] = copied_value
+    end
+
+    return copy
+end
+
+--- Same as utils.table_find but returns key instead of index.
+--- @param t table Table to look into.
+--- @param value any Value to find.
+--- @return any|nil
+function utils.table_find_k(t, value)
+    if not t then game.error("Table search failed: No table was provided.") return end
+    if not value then game.error("Table search failed: No value was provided.") return end
+
+    for k,v in pairs(t) do
+        if v == value then
+            return k
         end
     end
 end
@@ -133,6 +172,29 @@ end
 ---@param ends string End of the string.
 function utils.ends_with(str, ends)
     return str.sub(str, -#ends) == ends
+end
+
+--- Checks whether the string is nil, empty, or consists of white spaces.
+---@param str string
+---@return boolean
+function utils.is_empty(str)
+    if not str or string.gsub(str, " ", "") == "" then
+        return true
+    end
+    return false
+end
+
+function utils.clean_folder(path)
+    for _,item in ipairs(love.filesystem.getDirectoryItems(path)) do
+        local item_path = path.."/"..item
+
+        if love.filesystem.getInfo(item_path).type == "directory" then
+            utils.clean_folder(item_path)
+            love.filesystem.remove(item_path)
+        else
+            love.filesystem.remove(item_path)
+        end
+    end
 end
 
 return utils

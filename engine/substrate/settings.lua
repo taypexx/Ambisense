@@ -12,12 +12,14 @@ local MSAA_SAMPLES = {2, 4, 8}
 local settings = {
     current = {},
     default = {
+        offset = 0,
+
         -- Volumes are within the range 0 ~ 100.
         audio = {
             music_volume = 50,
             sfx_volume = 50,
             voice_volume = 50,
-            hitsound_volume = 50,
+            hitsounds_volume = 50,
             directional_hitsounds = true
         },
 

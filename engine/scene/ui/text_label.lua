@@ -19,7 +19,7 @@ setmetatable(text_label, ui_element)
 
 --- Draws the text label.
 function text_label:draw()
-    if not self.active then return end
+    if not self:is_drawing() then return end
 
     -- Draw the base
     ui_element.draw(self)

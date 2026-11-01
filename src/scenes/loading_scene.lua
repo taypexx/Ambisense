@@ -9,6 +9,7 @@ local font_bold = game.asset_handler:get_font("pixeloid_bold", 32)
 ---@field tips table<string>
 ---@field elements table<string,ui_element>
 local loading_scene = {
+    elements = {},
     loading_texts = {
         default = " Loading...",
         chart = " Loading the chart..."
@@ -17,16 +18,25 @@ local loading_scene = {
         "Tip text 1",
         "Tip text 2",
         "Tip text 3"
-    },
-    elements = {
-        loading_text = nil,
-        tip_text = nil,
     }
 }
 loading_scene.__index = loading_scene
 
 -- Inherits
 setmetatable(loading_scene, scene_controller)
+
+function loading_scene:load(other_scene)
+    local loading_text = (other_scene and self.loading_texts[other_scene.name]) or self.loading_texts.default
+    self.elements.loading_text.text = loading_text
+
+    self.elements.tip_text.text = self.tips[math.random(1,#self.tips)]
+
+    -- TODO: Add jumping enemies at the bottom of the screen while loading
+end
+
+function loading_scene:unload()
+    
+end
 
 function loading_scene:init()
     self.elements = {
@@ -45,19 +55,6 @@ function loading_scene:init()
             0.8, 0.1
         )
     }
-end
-
-function loading_scene:loading(other_scene)
-    local loading_text = (other_scene and self.loading_texts[other_scene.name]) or self.loading_texts.default
-    self.elements.loading_text.text = loading_text
-
-    self.elements.tip_text.text = self.tips[math.random(1,#self.tips)]
-
-    -- TODO: Add jumping enemies at the bottom of the screen while loading
-end
-
-function loading_scene:unloading()
-    
 end
 
 function loading_scene:new()

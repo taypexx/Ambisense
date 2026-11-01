@@ -123,11 +123,13 @@ function appdata:init()
     self.settings_file = love.filesystem.newFile(self.settings_file_path)
 end
 
---- Closes all file handles if they are opened.
-function appdata:close_file_handles()
+--- Closes all file handles if they are opened and cleans up the cache.
+function appdata:cleanup()
     self.client_log:close()
     self.save_file:close()
     self.settings_file:close()
+
+    utils.clean_folder(self.cache_path)
 end
 
 return appdata

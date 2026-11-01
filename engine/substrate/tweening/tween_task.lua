@@ -27,7 +27,7 @@ setmetatable(tween_task, object)
 
 --- Updates the value of the table.
 function tween_task:update()
-    if not self.table[self.key] then self:destroy() end
+    if not self.table[self.key] then self:destroy() return end
 
     if love.timer.getTime() < self.time_end then
         self.table[self.key] = self.func(self.value_start, self.value_end, self.time_start, self.time_end)

@@ -79,7 +79,7 @@ function asset_handler:init()
                 local sub_file_path = file_path.."/"..file_name
                 local sub_info = love.filesystem.getInfo(sub_file_path)
                 if sub_info and sub_info.type == "file" then
-                    local audio = game.audio.audio:new(sub_file_path, folder_name == "sfx")
+                    local audio = game.audio.audio:new(sub_file_path, folder_name ~= "music")
                     if audio then
                         if not self.audios[folder_name] then
                             self.audios[folder_name] = {}

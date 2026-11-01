@@ -88,7 +88,7 @@ end
 function world_handler:load_map(map_name, scene)
     if not map_name then game.error("Cannot load the map: map_name was not provided.") return end
     if not scene then game.error("Cannot load the map: scene was not provided.") return end
-    if not scene.active then game.error("Cannot load the map: scene is not active.") return end
+    --if not scene.active then game.error("Cannot load the map: scene is not active.") return end
 
     local map = game.asset_handler.maps[map_name]
     if not map then game.error(string.format("Cannot load map: map %s doesn't exist.", map_name)) return end
@@ -104,14 +104,6 @@ function world_handler:load_map(map_name, scene)
 
     self.current_map = map
     map:load(scene)
-
-    -- Unload the loaded map once the scene changes
-    scene.on_unload:sub_once(function ()
-        if map == self.current_map then
-            self.current_map = nil
-            map:unload()
-        end
-    end)
 
     return map
 end

@@ -89,7 +89,7 @@ function map:load(scene)
     local bg_layer = 0
     for _,layer in pairs(self.sti.layers) do
         -- BG layers (image layers)
-        if layer.image and string.sub(layer.name, 1, 2) == "bg" then
+        if layer.image and utils.starts_with(layer.name, "bg") then
             layer.visible = false
 
             local bg = background:new(layer.image, self, bg_layer, layer.parallaxx, layer.parallaxy)

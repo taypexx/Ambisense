@@ -26,13 +26,13 @@
 #WAV0F boss3
 #WAV0G boss4
 #WAV0H boss_special
-#WAV0P Vignette Start
-#WAV0Q Vignette Max
-#WAV0R Vignette End
-#WAV0S Speed 1
-#WAV0T Speed 2
-#WAV0U Speed 3
-#WAV0V Speed 4
+#WAV0P vignette_start
+#WAV0Q vignette_max
+#WAV0R vignette_end
+#WAV0S speed1
+#WAV0T speed2
+#WAV0U speed3
+#WAV0V speed4
 
 
 *---------------------- MAIN DATA FIELD
@@ -113,10 +113,10 @@
 
 #03553:05050505
 
-#03653:08
+#03652:08
 #03656:08
 
-#03753:08
+#03752:08
 #03756:08
 
 #03811:00000E0E

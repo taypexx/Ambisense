@@ -22,12 +22,12 @@ tween.__newindex = utils.readonly_func({"tasks", "funcs"})
 ---@param key any Key of the value.
 ---@param value number The end value to reach.
 ---@param duration number Duration of the tween in seconds.
----@param func_name string|nil Tween function name.
+---@param easing string|nil Easing name.
 ---@param end_func function|nil Function to execute after the tween completion.
-function tween:start(t, key, value, duration, func_name, end_func)
+function tween:start(t, key, value, duration, easing, end_func)
     if not (t and key and value and duration) then game.error("Cannot tween: One of the parameters was not provided.") return end
 
-    local func = (func_name and self.funcs[func_name]) or self.funcs["linear"]
+    local func = (easing and self.funcs[easing]) or self.funcs["linear"]
     local task = game.tween_task:new(t, key, value, duration, func, end_func)
     table.insert(self.tasks, task)
 end

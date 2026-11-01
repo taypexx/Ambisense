@@ -19,7 +19,9 @@ game = {
 -- Proper indexing for the game table
 setmetatable(game, {
     __index = function (t,lib)
-        for _,v in pairs({"", ".types", ".tweening"}) do
+        for k,v in pairs({"", ".types", ".tweening"}) do
+            if k == "const" then return v end
+            
             local s,m = pcall(require, string.format("engine.substrate%s.%s", v, lib))
             if s then
                 return m
@@ -30,7 +32,7 @@ setmetatable(game, {
 
 -- Proper indexing for the internal tables inside game
 for cat,libs in pairs(game) do
-    if type(libs) == "table" then
+    if type(libs) == "table" and cat ~= "const" then
         setmetatable(libs, {
             __index = function(t,lib)
                 if lib == "handler" then
@@ -126,7 +128,7 @@ end
 
 function game:update(dt)
     -- Clamp delta time if the game froze for a long time
-    dt = math.min(dt, 1 / 30)
+    --dt = math.min(dt, 1 / 30)
 
     self.audio.handler:update()
     self.world.handler:update(dt)
@@ -146,5 +148,5 @@ function game:quit()
     self.settings:save()
     self.save:save()
 
-    self.appdata:close_file_handles()
+    self.appdata:cleanup()
 end

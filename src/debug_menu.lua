@@ -47,7 +47,7 @@ return function (init_scene)
         mouse_coords.text = string.format("screen x: %i | screen y: %i | x: %i | y: %i", x, y, wx, wy)
         mouse_coords:set_position(x + mouse.current_cursor.sprite.width, y + mouse.current_cursor.sprite.height)
 
-        if mouse.current_component then
+        if mouse.current_component and mouse.current_component.object_id then
             mouse_coords.text = mouse_coords.text.." | object_ID: "..mouse.current_component.object_id
         end
     end)
