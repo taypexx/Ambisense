@@ -16,7 +16,6 @@ setmetatable(enemy, note)
 function enemy:hit(dt)
     note.hit(self, dt)
 
-
     tween:start(self, "y", self.y - 75, 0.1, "sine", function ()
         tween:start(self, "y", self.y + 500, 1.5, "linear")
     end)

@@ -6,16 +6,18 @@ local console = require("src.dev_console")
 
 return function (init_scene)
     local coords = game.scene.ui.text_label:new(
-        init_scene, game.asset_handler:get_font("pixeloid", 20),
-        nil, nil, nil, nil, 9998,
+        init_scene, 9998,
+        game.asset_handler.fonts.pixeloid,
+        nil, nil, nil, nil,
         0,0,
         0.1, 0.1
     )
     coords:set_parent(init_scene)
 
     local mouse_coords = game.scene.ui.text_label:new(
-        init_scene, game.asset_handler:get_font("pixeloid", 14),
-        nil, nil, nil, nil, 9999,
+        init_scene, 9999,
+        game.asset_handler.fonts.pixeloid,
+        nil, nil, nil, nil,
         0,0,
         0.1, 0.1
     )

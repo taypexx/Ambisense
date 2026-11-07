@@ -38,6 +38,7 @@ game.notes.enemy = require("src.charts.notes.enemies.enemy")
 game.notes.speed = require("src.charts.notes.speed.speed")
 
 game.scene_controller = require("src.scenes.scene_controller")
+game.scene_ui = require("src.scenes.scene_ui")
 
 return function()
     game.log("Game started.")

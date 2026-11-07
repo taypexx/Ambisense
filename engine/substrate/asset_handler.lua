@@ -12,21 +12,6 @@ local asset_handler = {
 }
 asset_handler.__index = asset_handler
 
---- Gets the love font object 
----@param font_name string Name of the font.
----@param size integer|nil Size of the font.
----@return love.font|nil
-function asset_handler:get_font(font_name, size)
-    local font = self.fonts[font_name]
-    if not font then game.error(string.format("Cannot get the font: Font %s is not loaded.", font_name)) return end
-
-    size = size or 12
-    local love_font = font.fonts[size]
-    if not love_font then game.error(string.format("Cannot get the font: Font %s does not have size %d.", font_name, size)) return end
-
-    return love_font
-end
-
 --- Loads every asset into the memory.
 function asset_handler:init()
     -- Loading fonts

@@ -50,6 +50,13 @@ local const = {
         [55] = 6, -- Misc2 (long)
         [58] = 7, -- Misc3 (long)
         [59] = 8, -- Misc4 (long)
+    },
+
+    directions = {
+        [1] = "left",
+        [2] = "up",
+        [3] = "right",
+        [4] = "down"
     }
 }
 

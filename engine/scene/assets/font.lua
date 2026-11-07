@@ -3,7 +3,7 @@ local utils = game.utils
 
 ---@class font:object
 ---@field name string The file name of the font.
----@field fonts table<integer,love.font> The love font objects.
+---@field fonts table<integer,love.Font> The love font objects.
 local font = {
     name = nil,
     fonts = nil
@@ -26,7 +26,7 @@ function font:new(file_name)
     new.name = utils.split(file_name, ".")[1] or file_name
     new.fonts = {}
 
-    for _,size in ipairs({12, 14, 16, 18, 20, 24, 28, 32, 36, 48, 64, 72}) do
+    for _,size in ipairs({72, 64, 48, 36, 32, 28, 24, 20, 18, 16, 14, 12}) do
         local love_font = love.graphics.newFont(file_path, size)
         if love_font then
             new.fonts[size] = love_font
@@ -41,8 +41,10 @@ end
 
 --- Destroys the font and its love font object.
 function font:destroy()
-    if self.love_font then
-        self.love_font:release()
+    for _,love_font in pairs(self.fonts) do
+        if love_font then
+            love_font:release()
+        end
     end
     object.destroy(self)
 end

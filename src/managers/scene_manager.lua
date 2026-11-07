@@ -39,10 +39,17 @@ function scene_manager:switch(scene_name, ...)
 end
 
 function scene_manager:init()
-    self.controllers = {
-        loading = require("src.scenes.loading_scene"):new(),
-        chart = require("src.scenes.chart_scene"):new()
-    }
+    for _,scene_name in ipairs({"loading", "chart"}) do
+        local controller = require(string.format("src.scenes.%s.scene", scene_name)):new()
+        local ui = require(string.format("src.scenes.%s.ui", scene_name)):new()
+
+        controller.ui = ui
+        ui.controller = controller
+        ui.scene = controller.scene
+
+        self.controllers[scene_name] = controller
+        controller:init()
+    end
 end
 
 return scene_manager

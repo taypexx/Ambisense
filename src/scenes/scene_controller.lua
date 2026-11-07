@@ -5,12 +5,14 @@ local scene = game.scene.scene
 ---@class scene_controller:object
 ---@field name string Same as scene_controller.scene.name.
 ---@field scene scene Scene of the controller.
+---@field ui scene_ui UI of the scene.
 local scene_controller = {
     name = nil,
     scene = nil,
+    ui = nil
 }
 scene_controller.__index = scene_controller
-scene_controller.__newindex = utils.readonly_func({"name", "scene"})
+scene_controller.__newindex = utils.readonly_func({"name", "scene", "ui"})
 
 -- Inherits
 setmetatable(scene_controller, object)

@@ -162,6 +162,15 @@ function settings:apply(t)
         end
     end
 
+    -- Applying
+    local video = self.current.video
+    love.window.setMode(video.window_width, video.window_height, {
+        fullscreen = video.window_type == "fullscreen",
+        borderless = video.window_type == "borderless",
+        vsync = video.vsync and 1 or 0,
+        msaa = video.msaa_samples
+    })
+
     return true
 end
 
